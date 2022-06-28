@@ -5,27 +5,79 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\EmailValidationController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource()]
+// #[ApiResource(
+//     collectionOperations:[
+//         "post",
+//         "post_register" => [
+//         "method"=>"post",
+//         'status' => Response::HTTP_CREATED,
+//         'path'=>'register/',
+//         'denormalization_context' => ['groups' => ['user:write']],
+//         'normalization_context' => ['groups' => ['user:read:simple']]
+//         ],
+//         ]
+// )]
+#[ApiResource(
+       collectionOperations:[
+           "post",
+        "VALIDATE" => [
+            "method"=>"PATCH",
+             'deserialize' => false,
+            'path'=>'users/validate/{token}',
+            'controller' => EmailValidationController::class
+    
+        ]]
+     )]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    #[Groups(['user:read:simple'])]
+    protected $id;
 
+    #[Groups(['user:read:simple','user:write'])]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $email;
-
+    protected $email;
+    
     #[ORM\Column(type: 'json')]
-    private $roles = [];
+    #[Groups(['user:read:simple'])]
+    protected $roles = [];
 
     #[ORM\Column(type: 'string')]
-    private $password;
+    protected $password;
 
+    #[SerializedName("password")]
+    protected $plainPassword;
+
+    #[ORM\Column(type: 'boolean')]
+     protected $isEnable=false;
+
+    #[ORM\Column(type: 'string', length: 255)]
+     protected $token;
+
+    #[ORM\Column(type: 'datetime')]
+     protected $expireAt;
+public function __construct()
+{
+    $this->generateToken();
+}
+public function generateToken(){
+
+    $this->token=str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(random_bytes(128)));
+    $this->expireAt=new \DateTime("+1 day");
+
+
+}
     public function getId(): ?int
     {
         return $this->id;
@@ -94,5 +146,53 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function isIsEnable(): ?bool
+    {
+        return $this->isEnable;
+    }
+
+    public function setIsEnable(bool $isEnable): self
+    {
+        $this->isEnable = $isEnable;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getExpireAt(): ?\DateTimeInterface
+    {
+        return $this->expireAt;
+    }
+
+    public function setExpireAt(\DateTimeInterface $expireAt): self
+    {
+        $this->expireAt = $expireAt;
+
+        return $this;
     }
 }

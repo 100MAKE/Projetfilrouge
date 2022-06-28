@@ -12,38 +12,38 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[ApiResource()]
 class Boisson extends Produit
 {
-    #[ORM\ManyToMany(targetEntity: Taille::class, mappedBy: 'boissons')]
-    private $tailles;
+//     #[ORM\ManyToMany(targetEntity: Taille::class, mappedBy: 'boissons')]
+//     private $tailles;
 
-    public function __construct()
-    {
-        $this->tailles = new ArrayCollection();
-    }
+//     public function __construct()
+//     {
+//         $this->tailles = new ArrayCollection();
+//     }
 
-    /**
-     * @return Collection<int, Taille>
-     */
-    public function getTailles(): Collection
-    {
-        return $this->tailles;
-    }
+//     /**
+//      * @return Collection<int, Taille>
+//      */
+//     public function getTailles(): Collection
+//     {
+//         return $this->tailles;
+//     }
 
-    public function addTaille(Taille $taille): self
-    {
-        if (!$this->tailles->contains($taille)) {
-            $this->tailles[] = $taille;
-            $taille->addBoisson($this);
-        }
+//     public function addTaille(Taille $taille): self
+//     {
+//         if (!$this->tailles->contains($taille)) {
+//             $this->tailles[] = $taille;
+//             $taille->addBoisson($this);
+//         }
 
-        return $this;
-    }
+//         return $this;
+//     }
 
-    public function removeTaille(Taille $taille): self
-    {
-        if ($this->tailles->removeElement($taille)) {
-            $taille->removeBoisson($this);
-        }
+//     public function removeTaille(Taille $taille): self
+//     {
+//         if ($this->tailles->removeElement($taille)) {
+//             $taille->removeBoisson($this);
+//         }
 
-        return $this;
-    }
+//         return $this;
+//     }
 }

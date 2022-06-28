@@ -1,0 +1,11 @@
+
+{% extends 'base.html.twig' %}
+{% block body %}
+<div>
+    <h1> bonjour {{ user.email}}</h1>
+    <p>
+      cliquez sur ce liens pour activer votre compte
+    </p>
+<a  href="{{url('api_users_VALIDATE_collection',{'token':token})}}">ici</a>
+</div>
+{% endblock %}

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
+#[ORM\InheritanceType("JOINED")]
 class Menu extends Produit
 {
     #[ORM\ManyToMany(targetEntity: Burger::class, mappedBy: 'menus')]
@@ -30,24 +31,24 @@ class Menu extends Produit
         return $this->burgers;
     }
 
-    public function addBurger(Burger $burger): self
-    {
-        if (!$this->burgers->contains($burger)) {
-            $this->burgers[] = $burger;
-            $burger->addMenu($this);
-        }
+    // public function addBurger(Burger $burger): self
+    // {
+    //     if (!$this->burgers->contains($burger)) {
+    //         $this->burgers[] = $burger;
+    //         $burger->addMenu($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeBurger(Burger $burger): self
-    {
-        if ($this->burgers->removeElement($burger)) {
-            $burger->removeMenu($this);
-        }
+    // public function removeBurger(Burger $burger): self
+    // {
+    //     if ($this->burgers->removeElement($burger)) {
+    //         $burger->removeMenu($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, Complements>

@@ -2,10 +2,27 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Repository\ProduitRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Symfony\Component\HttpFoundation\Response;
+#[ORM\InheritanceType("JOINED")]
+#[ORM\DiscriminatorColumn(name:"type",type:"string")]
+#[ORM\DiscriminatorMap(["boisson"=>"Boisson", "burger"=>"Burger","menu"=>"Menu","portion"=>"PortionFrite" ])]
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
+
+#[ApiResource(
+    collectionOperations:[
+    "get",
+    "post" => [
+        'status' => Response::HTTP_CREATED,
+        'normalization_context' => ['groups' => ['write:simple','write']],
+        ]    
+
+    ],
+    itemOperations:["put","get"])]
+
 class Produit
 {
     #[ORM\Id]
