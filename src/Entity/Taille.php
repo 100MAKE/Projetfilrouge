@@ -2,30 +2,44 @@
 
 namespace App\Entity;
 
-use App\Repository\TailleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TailleRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TailleRepository::class)]
+#[ApiResource(
+    collectionOperations:[
+        "post" => [
+         "method"=>"post",
+         "denormalization_context"=>['group'=>["write"]]
+ 
+     ]]
+  )]
 class Taille
 {
+    #[Groups(["write"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-
+    
+    #[Groups(['write'])]
     #[ORM\Column(type: 'float')]
     private $prix;
 
+    #[Groups(['write'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
+
 
     #[ORM\ManyToMany(targetEntity: Boisson::class, inversedBy: 'tailles')]
     private $boissons;
 
-    #[ORM\ManyToOne(targetEntity: Complements::class, inversedBy: 'tailles')]
-    private $complements;
+    // #[ORM\ManyToOne(targetEntity: Complements::class, inversedBy: 'tailles')]
+    // private $complements;
 
     public function __construct()
     {
@@ -85,15 +99,15 @@ class Taille
         return $this;
     }
 
-    public function getComplements(): ?Complements
-    {
-        return $this->complements;
-    }
+    // public function getComplements(): ?Complements
+    // {
+    //     return $this->complements;
+    // }
 
-    public function setComplements(?Complements $complements): self
-    {
-        $this->complements = $complements;
+    // public function setComplements(?Complements $complements): self
+    // {
+    //     $this->complements = $complements;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

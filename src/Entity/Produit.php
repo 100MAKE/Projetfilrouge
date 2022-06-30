@@ -4,9 +4,10 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\InheritanceType;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\InheritanceType("JOINED")]
 #[ORM\DiscriminatorColumn(name:"type",type:"string")]
 #[ORM\DiscriminatorMap(["boisson"=>"Boisson", "burger"=>"Burger","menu"=>"Menu","portion"=>"PortionFrite" ])]
@@ -25,14 +26,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Produit
 {
+    #[Groups(["write"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Groups(["write"])]
     #[ORM\Column(type: 'string', length: 255)]
     private $nom;
 
+    #[Groups(["write"])]
     #[ORM\Column(type: 'float', nullable: true)]
     private $prix;
 

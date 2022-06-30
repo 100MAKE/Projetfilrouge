@@ -27,10 +27,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 // )]
 #[ApiResource(
        collectionOperations:[
-           "post",
-        "VALIDATE" => [
+            "post",
+            "VALIDATE" => [
             "method"=>"PATCH",
-             'deserialize' => false,
+            'deserialize' => false,
             'path'=>'users/validate/{token}',
             'controller' => EmailValidationController::class
     

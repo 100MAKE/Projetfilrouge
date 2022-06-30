@@ -2,21 +2,27 @@
 
 namespace App\Entity;
 
-use App\Repository\MenuRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MenuRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 #[ORM\InheritanceType("JOINED")]
+#[ApiResource(
+    collectionOperations:["get","post"],
+    itemOperations:["put","get"]
+    
+      
+    
+    )]
 class Menu extends Produit
 {
     #[ORM\ManyToMany(targetEntity: Burger::class, mappedBy: 'menus')]
     private $burgers;
 
-    #[ORM\ManyToMany(targetEntity: Complements::class, inversedBy: 'menus')]
-    private $complements;
-
+   
     public function __construct()
     {
         $this->burgers = new ArrayCollection();

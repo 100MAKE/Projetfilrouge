@@ -2,10 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\CatalogueRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CatalogueRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+#[ApiResource(
+    collectionOperations:["get","post"],
+    itemOperations:["put","get"]
+    
+      
+    
+    )]
 
-#[ORM\Entity(repositoryClass: CatalogueRepository::class)]
 class Catalogue
 {
     #[ORM\Id]

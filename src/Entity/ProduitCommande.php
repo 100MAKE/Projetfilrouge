@@ -2,8 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitCommandeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\ProduitCommandeRepository;
+#[ApiResource(
+    collectionOperations:["get","post"],
+    itemOperations:["put","get"]
+    
+      
+    
+    )]
 
 #[ORM\Entity(repositoryClass: ProduitCommandeRepository::class)]
 class ProduitCommande
