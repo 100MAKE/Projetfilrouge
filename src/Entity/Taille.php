@@ -14,12 +14,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
     collectionOperations:[
         "post" => [
          "method"=>"post",
+        //  "security"=>"is_granted('ROLE_GESTIONNAIRE')",
+        //  "security_message"=>"uniquement reserver aux gestionnaires",
          "denormalization_context"=>['group'=>["write"]]
  
      ]]
   )]
 class Taille
-{
+{ 
+
     #[Groups(["write"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -38,12 +41,16 @@ class Taille
     #[ORM\ManyToMany(targetEntity: Boisson::class, inversedBy: 'tailles')]
     private $boissons;
 
-    // #[ORM\ManyToOne(targetEntity: Complements::class, inversedBy: 'tailles')]
-    // private $complements;
+    #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'tailles')]
+    private $menus;
+
+
+    
 
     public function __construct()
     {
         $this->boissons = new ArrayCollection();
+        // $this->menus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,15 +106,37 @@ class Taille
         return $this;
     }
 
-    // public function getComplements(): ?Complements
-    // {
-    //     return $this->complements;
-    // }
+    /**
+     * @return Collection<int, Menu>
+     */
+    public function getMenus(): Collection
+    {
+        return $this->menus;
+    }
 
-    // public function setComplements(?Complements $complements): self
-    // {
-    //     $this->complements = $complements;
+    public function addMenu(Menu $menu): self
+    {
+        if (!$this->menus->contains($menu)) {
+            $this->menus[] = $menu;
+            $menu->addTaille($this);
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
+
+    public function removeMenu(Menu $menu): self
+    {
+        if ($this->menus->removeElement($menu)) {
+            $menu->removeTaille($this);
+        }
+
+        return $this;
+    }
+
+   
+
+   
+
+   
+    
 }

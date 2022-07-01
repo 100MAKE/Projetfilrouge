@@ -10,15 +10,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\InheritanceType("JOINED")]
 #[ORM\DiscriminatorColumn(name:"type",type:"string")]
-#[ORM\DiscriminatorMap(["boisson"=>"Boisson", "burger"=>"Burger","menu"=>"Menu","portion"=>"PortionFrite" ])]
+#[ORM\DiscriminatorMap([
+"boisson"=>"Boisson",
+ "burger"=>"Burger",
+ "menu"=>"Menu",
+ "portion"=>"PortionFrite"
+ ])]
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 
 #[ApiResource(
     collectionOperations:[
     "get",
     "post" => [
-        'status' => Response::HTTP_CREATED,
-        'normalization_context' => ['groups' => ['write:simple','write']],
+    'status' => Response::HTTP_CREATED,
+    'normalization_context' => ['groups' => ['write:simple','write']],
         ]    
 
     ],
@@ -26,25 +31,26 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Produit
 {
-    #[Groups(["write"])]
+    #[Groups(["write","menu","burger"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(["write"])]
-    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["menu","write","portion:read:simple","burger"])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $nom;
 
-    #[Groups(["write"])]
+    #[Groups(["menu","write","portion:read:simple","burger"])]
     #[ORM\Column(type: 'float', nullable: true)]
     private $prix;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["burger"])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $etat;
+     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+     private $etat="true";
 
     public function getId(): ?int
     {
@@ -87,15 +93,15 @@ class Produit
         return $this;
     }
 
-    public function getEtat(): ?string
-    {
-        return $this->etat;
-    }
+    // public function getEtat(): ?string
+    // {
+    //     return $this->etat;
+    // }
 
-    public function setEtat(string $etat): self
-    {
-        $this->etat = $etat;
+    // public function setEtat(string $etat): self
+    // {
+    //     $this->etat = $etat;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

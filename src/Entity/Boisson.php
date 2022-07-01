@@ -14,8 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     collectionOperations:[
         "post" => [
          "method"=>"post",
-        //  "access_control"=>"is_granted('GESTIONNAIRE')",
-        //  "security_message"=>"je samake",
+        //  "security"=>"is_granted('ROLE_GESTIONNAIRE')",
+        //  "security_message"=>"uniquement reserver aux gestionnaires",
          "denormalization_context"=>['group'=>["write"]]
  
         ],
