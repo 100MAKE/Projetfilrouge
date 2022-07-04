@@ -2,13 +2,13 @@
 namespace App\DataProvider;
 
 use App\Entity\BlogPost;
-use App\Entity\Complement;
+use App\Entity\Complements;
 use App\Repository\TailleRepository;
 use App\Repository\PortionFriteRepository;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 
-final class ComplementDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
+final class ComplementsDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
 {
     private $portionfriteRepo;
     private $tailleRepo;
@@ -16,19 +16,19 @@ final class ComplementDataProvider implements ContextAwareCollectionDataProvider
     public function __construct(PortionFriteRepository $portionfriteRepo,TailleRepository $tailleRepo)
     {
         $this->portionfriteRepo=$portionfriteRepo;
-        $this->tailleRepo=$portionfriteRepo;
+        $this->tailleRepo=$tailleRepo;
     }
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return Complement::class === $resourceClass;
+        return Complements::class === $resourceClass;
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        $complements = [];
-        [$complements="portionfrite"=> $this->portionfriteRepo->findAll()];
-        [$complements="taille"=> $this->tailleRepo->findAll()];
-
-        return $complements;
+       
+        return [
+            ["portionfrite"=> $this->portionfriteRepo->findAll()],
+            ["taille"=> $this->tailleRepo->findAll()]
+        ];
     }
 }

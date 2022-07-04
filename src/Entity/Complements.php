@@ -8,8 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ApiResource(
-    collectionOperations: ["get",],
-    itemOperations: []
+    collectionOperations: ["get",]
 )]
 
 class Complements

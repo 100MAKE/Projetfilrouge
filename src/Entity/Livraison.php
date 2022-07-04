@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\LivraisonRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\LivraisonRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: LivraisonRepository::class)]
+#[ApiResource()]
 class Livraison
 {
     #[ORM\Id]

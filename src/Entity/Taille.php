@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Taille
 { 
 
-    #[Groups(["write"])]
+     #[Groups(["menus"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

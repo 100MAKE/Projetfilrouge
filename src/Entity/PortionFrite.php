@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PortionFriteRepository;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PortionFriteRepository::class)]
 #[ApiResource(
@@ -22,7 +23,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
     itemOperations:["put","get"]
     )]
 class PortionFrite extends Produit
-{
+{     
+    //  #[Groups(["menus"])]
      #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'portionfrites')]
     private $menus;
 

@@ -2,10 +2,10 @@
 
 // src/DataPersister/UserDataPersister.php
 
-namespace App\DataPersister;
+namespace App\DataPersister\CalculPrixPersiter;
 
 use App\Entity\Menu;
-use App\Services\calculPrixMenuService;
+use App\Services\CalculPrixMenuService;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
@@ -16,7 +16,7 @@ use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 class CalculPrixPersiter implements ContextAwareDataPersisterInterface
 {
 
-    public function __construct(EntityManagerInterface $entityManager, calculPrixMenuService $calculPrixMenuService
+    public function __construct(EntityManagerInterface $entityManager, CalculPrixMenuService $calculPrixMenuService
     ) {
         $this->entityManager = $entityManager;
         $this-> calculPrixMenuService = $calculPrixMenuService; 

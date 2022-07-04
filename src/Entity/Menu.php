@@ -11,30 +11,44 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 // #[ORM\InheritanceType("JOINED")]
-#[ApiResource(
-    collectionOperations:["get",
-    "post" => [
-    "method"=>"post",
-    // "security"=>"is_granted('ROLE_GESTIONNAIRE')",
-    // "security_message"=>"uniquement reserver aux gestionnaires",
-    // "denormalization_context"=>['group'=>["menu"]]
+// #[ApiResource(
+//     collectionOperations:["get",
+//     "post" => [
+//     "method"=>"post",
+//     // "security"=>"is_granted('ROLE_GESTIONNAIRE')",
+//     // "security_message"=>"uniquement reserver aux gestionnaires",
+//     // "denormalization_context"=>['group'=>["menu"]]
 
-       ]],
-    itemOperations:["put","get"]
+//        ]],
+//     itemOperations:["put","get"]
     
       
     
-    )]
+//     )]
+#[ApiResource(
+    attributes: ["security" => "is_granted('ROLE_USER')"],
+    collectionOperations: [
+        "get"=>["normalization_context"=>["groups"=>["menus:write"]]],
+        "post" => [ 
+            "security_post_denormalize" => "is_granted('BOOK_CREATE', object)",
+            "denormalization_context"=>["groups"=>["menus"]]
+    ]],
+    itemOperations: [
+        "get" => [ "security" => "is_granted('BOOK_READ', object)" ],
+        "put" => [ "security" => "is_granted('BOOK_EDIT', object)" ],
+        "delete" => [ "security" => "is_granted('BOOK_DELETE', object)" ],
+    ],
+)]
 class Menu extends Produit
 {
-    #[Groups(["menu"])]
+    #[Groups(["menus"])]
      #[ORM\ManyToMany(targetEntity: Burger::class, mappedBy: 'menus',cascade:["persist"])]
      private $burgers;
-
- #[ORM\ManyToMany(targetEntity: Taille::class, inversedBy: 'menus',cascade:["persist"])]
- private $tailles;
-
-     #[ORM\ManyToMany(targetEntity: PortionFrite::class, inversedBy: 'menus',cascade:["persist"])]
+     #[Groups(["menus"])]
+    #[ORM\ManyToMany(targetEntity: Taille::class, inversedBy: 'menus',cascade:["persist"])]
+    private $tailles;
+    #[Groups(["menus"])]
+    #[ORM\ManyToMany(targetEntity: PortionFrite::class, inversedBy: 'menus',cascade:["persist"])]
     private $portionfrites;
 
     
@@ -44,7 +58,7 @@ class Menu extends Produit
   public function __construct()
      {
   $this->burgers = new ArrayCollection();
-   $this->tailles = new ArrayCollection();
+  $this->tailles = new ArrayCollection();
          $this->portionfrites = new ArrayCollection();
     }
      /**

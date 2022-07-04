@@ -2,22 +2,29 @@
 
 namespace App\Entity;
 
-use App\Repository\GestionnaireRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\GestionnaireRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: GestionnaireRepository::class)]
+#[ApiResource()]
 class Gestionnaire  extends User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    protected $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $nom;
+    protected $nom;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $prenom;
+    protected $prenom;
+    public function __construct()
+    {
+        parent::__construct();
+       $this->setRoles(["ROLE_GESTIONNAIRE"]);
+    }
 
     public function getId(): ?int
     {
