@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     )]
 class PortionFrite extends Produit
 {     
-    //  #[Groups(["menus"])]
+    
      #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'portionfrites')]
     private $menus;
 

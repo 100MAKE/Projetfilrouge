@@ -35,25 +35,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Produit
 {
-    // #[Groups(["menus:write"])]
-    #[Groups(["write","menus","burger",])]
+    
+    #[Groups(["menus"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
    
     
     private $id;
-    // #[Groups(["menus:write"])]
+    
 
-
-     #[Groups(["menus","write","portion:read:simple","burger","menus:write"])]
+    
+    #[Groups(["menu","write","portion:read:simple","burger","menus"])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $nom;
 
-    #[Groups(["menus","write","portion:read:simple","burger"])]
+    #[Groups(["menu","write","portion:read:simple","burger","menus"])]
     #[ORM\Column(type: 'float', nullable: true)]
     private $prix;
-
+    
     #[Groups(["burger"])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image;
@@ -63,6 +63,9 @@ class Produit
 
      #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'produits')]
      private $commandes;
+     #[Groups(["menus"])]
+     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'produits')]
+     private $gestionnaire;
 
      public function __construct()
      {
@@ -145,6 +148,18 @@ class Produit
         if ($this->commandes->removeElement($commande)) {
             $commande->removeProduit($this);
         }
+
+        return $this;
+    }
+
+    public function getGestionnaire(): ?Gestionnaire
+    {
+        return $this->gestionnaire;
+    }
+
+    public function setGestionnaire(?Gestionnaire $gestionnaire): self
+    {
+        $this->gestionnaire = $gestionnaire;
 
         return $this;
     }

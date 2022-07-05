@@ -2,7 +2,7 @@
 
 // src/DataPersister/UserDataPersister.php
 
-namespace App\DataPersister\CalculPrixPersiter;
+namespace App\DataPersister;
 
 use App\Entity\Menu;
 use App\Services\CalculPrixMenuService;
@@ -35,8 +35,12 @@ class CalculPrixPersiter implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
-       $prix=$this->calculPrixMenuService->getMenuPrice($data);
-        $data->setPrix($prix);
+        if ( $data instanceof Menu) {
+            
+            dd($data);
+            $prix=$this->calculPrixMenuService->getMenuPrice($data);
+             $data->setPrix($prix);
+        }
         $this-> entityManager->persist($data);
         $this-> entityManager->flush();
     }

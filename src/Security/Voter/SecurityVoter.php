@@ -34,11 +34,13 @@ class BookVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        /** ... check if the user is anonymous ... **/
+        /** ... check if the user is anonymous ... ["ROLE_GESTIONNAIRE"]**/
 
         switch ($attribute) {
             case 'BOOK_CREATE':
-                if ( $this->security->isGranted("ROLE_GESTIONNAIRE") ) { return true; }  // only admins can create books
+                if ($this->security->isGranted("ROLE_GESTIONNAIRE")) {
+                    return true;
+                }  // only admins can create books
                 break;
             case 'BOOK_READ':
                 /** ... other autorization rules ... **/

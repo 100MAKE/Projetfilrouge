@@ -6,7 +6,7 @@ use PhpParser\Builder\Class_;
 
 Class CalculPrixMenuService{
 
-    public function getMenuPrice(Menu $datamenu)
+    public function getMenuPrice( $datamenu)
     {
         $prix = 0;
         foreach ($datamenu->getPortionFrites() as  $portionfrite) {
