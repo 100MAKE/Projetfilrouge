@@ -64,27 +64,27 @@ class Gestionnaire  extends User
         return $this->produits;
     }
 
-    public function addProduit(Produit $produit): self
-    {
-        if (!$this->produits->contains($produit)) {
-            $this->produits[] = $produit;
-            $produit->setGestionnaire($this);
-        }
+    // public function addProduit(Produit $produit): self
+    // {
+    //     if (!$this->produits->contains($produit)) {
+    //         $this->produits[] = $produit;
+    //         $produit->setGestionnaire($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeProduit(Produit $produit): self
-    {
-        if ($this->produits->removeElement($produit)) {
-            // set the owning side to null (unless already changed)
-            if ($produit->getGestionnaire() === $this) {
-                $produit->setGestionnaire(null);
-            }
-        }
+    // public function removeProduit(Produit $produit): self
+    // {
+    //     if ($this->produits->removeElement($produit)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($produit->getGestionnaire() === $this) {
+    //             $produit->setGestionnaire(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, Commande>

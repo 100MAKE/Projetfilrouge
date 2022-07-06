@@ -4,23 +4,30 @@
 
 namespace App\DataPersister;
 
+use App\Entity\Menu;
 use App\Entity\Produit;
+use App\Services\CalculPrixMenu;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Security;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  *
  */
 class ProduitDataPersister implements ContextAwareDataPersisterInterface
-{      private $entityManager;
-       private $security;
-    public function __construct(EntityManagerInterface $entityManager,Security $security) 
+{
+    private $entityManager;
+    private $security;
+    private $token;
+    public function __construct(CalculPrixMenu $calculPrixMenu, EntityManagerInterface $entityManager, Security $security, TokenStorageInterface $token)
     {
+
         $this->entityManager = $entityManager;
         $this->security = $security;
-        
+        $this->token = $token;
+        $this->calculPrixMenu = $calculPrixMenu;
     }
 
     /**
@@ -36,11 +43,14 @@ class ProduitDataPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
-        if ( $data instanceof Produit ) {
-            $data->setGestionnaire($this->security->getUser());
+        if ($data instanceof Produit) {
+            $data->setGestionnaire($this->token->getToken()->getUser());
         }
-        $this-> entityManager->persist($data);
-        $this-> entityManager->flush();
+        if ($data instanceof Menu) {
+            $data->setPrix($this->calculPrixMenu->priceMenu($data));
+        }
+        $this->entityManager->persist($data);
+        $this->entityManager->flush();
     }
 
     /**

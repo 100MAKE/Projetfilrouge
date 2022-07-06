@@ -63,7 +63,7 @@ class Produit
      private $commandes;
      #[Groups(["menus"])]
      #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'produits')]
-     private $gestionnaire;
+      private $gestionnaire;
 
      public function __construct()
      {
@@ -123,13 +123,13 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommandes(): Collection
-    {
-        return $this->commandes;
-    }
+    // /**
+    //  * @return Collection<int, Commande>
+    //   */
+    // public function getCommandes(): Collection
+    // {
+    //     return $this->commandes;
+    // }
 
     public function addCommande(Commande $commande): self
     {

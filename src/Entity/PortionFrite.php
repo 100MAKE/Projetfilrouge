@@ -24,7 +24,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
     )]
 class PortionFrite extends Produit
 {     
-    
     #[ORM\OneToMany(mappedBy: 'portionfrite', targetEntity: MenuPortionFrite::class,cascade:["persist"])]
     private $menuPortionFrites;
 

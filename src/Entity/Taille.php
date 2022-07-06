@@ -29,15 +29,15 @@ class Taille
     #[ORM\Column(type: 'integer')]
     private $id;
     
-    #[Groups(['write'])]
+    #[Groups(['write',"menus"])]
     #[ORM\Column(type: 'float')]
     private $prix;
 
-    #[Groups(['write'])]
+    #[Groups(['write',"menus"])]
     #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
 
-
+    // #[Groups("menus")]
     #[ORM\ManyToMany(targetEntity: Boisson::class, inversedBy: 'tailles')]
     private $boissons;
 
@@ -110,62 +110,62 @@ class Taille
         return $this;
     }
 
-    /**
-     * @return Collection<int, Menu>
-     */
-    public function getMenus(): Collection
-    {
-        return $this->menus;
-    }
+    // /**
+    //  * @return Collection<int, Menu>
+    //  */
+    // public function getMenus(): Collection
+    // {
+    //     return $this->menus;
+    // }
 
-    public function addMenu(Menu $menu): self
-    {
-        if (!$this->menus->contains($menu)) {
-            $this->menus[] = $menu;
-            $menu->addTaille($this);
-        }
+    // public function addMenu(Menu $menu): self
+    // {
+    //     if (!$this->menus->contains($menu)) {
+    //         $this->menus[] = $menu;
+    //         $menu->addTaille($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeMenu(Menu $menu): self
-    {
-        if ($this->menus->removeElement($menu)) {
-            $menu->removeTaille($this);
-        }
+    // public function removeMenu(Menu $menu): self
+    // {
+    //     if ($this->menus->removeElement($menu)) {
+    //         $menu->removeTaille($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * @return Collection<int, MenuTaille>
-     */
-    public function getMenuTailles(): Collection
-    {
-        return $this->menuTailles;
-    }
+    // /**
+    //  * @return Collection<int, MenuTaille>
+    //  */
+    // public function getMenuTailles(): Collection
+    // {
+    //     return $this->menuTailles;
+    // }
 
-    public function addMenuTaille(MenuTaille $menuTaille): self
-    {
-        if (!$this->menuTailles->contains($menuTaille)) {
-            $this->menuTailles[] = $menuTaille;
-            $menuTaille->setTaille($this);
-        }
+    // public function addMenuTaille(MenuTaille $menuTaille): self
+    // {
+    //     if (!$this->menuTailles->contains($menuTaille)) {
+    //         $this->menuTailles[] = $menuTaille;
+    //         $menuTaille->setTaille($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeMenuTaille(MenuTaille $menuTaille): self
-    {
-        if ($this->menuTailles->removeElement($menuTaille)) {
-            // set the owning side to null (unless already changed)
-            if ($menuTaille->getTaille() === $this) {
-                $menuTaille->setTaille(null);
-            }
-        }
+    // public function removeMenuTaille(MenuTaille $menuTaille): self
+    // {
+    //     if ($this->menuTailles->removeElement($menuTaille)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($menuTaille->getTaille() === $this) {
+    //             $menuTaille->setTaille(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
    
 

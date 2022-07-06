@@ -2,22 +2,30 @@
 
 namespace App\Entity;
 
-use App\Repository\MenuTailleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MenuTailleRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MenuTailleRepository::class)]
+#[ApiResource()]
 class MenuTaille
-{
+{   #[Groups("menus")]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Groups("menus")]
     #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'menuTailles')]
     private $taille;
 
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuTailles')]
     private $menu;
+
+    #[Groups("menus")]
+    #[ORM\Column(type: 'integer')]
+    private $quantite;
 
     public function getId(): ?int
     {
@@ -44,6 +52,18 @@ class MenuTaille
     public function setMenu(?Menu $menu): self
     {
         $this->menu = $menu;
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(int $quantite): self
+    {
+        $this->quantite = $quantite;
 
         return $this;
     }
