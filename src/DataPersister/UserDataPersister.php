@@ -41,10 +41,11 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
             $password=$this->encoder->hashPassword($data,$data->getPlainPassword());
             $data->setPassword($password);
             $data->eraseCredentials();
-            $this-> entityManager->persist($data);
-            $this-> entityManager->flush();
+            // dd($data);
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
             $this->mailerService->SendEmail($data);
-
+            
         }
     }
 

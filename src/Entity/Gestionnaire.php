@@ -12,12 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: GestionnaireRepository::class)]
 #[ApiResource()]
 class Gestionnaire  extends User
-{  
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    protected $id;
-
+{
     #[ORM\Column(type: 'string', length: 255)]
     protected $nom;
 
@@ -26,16 +21,15 @@ class Gestionnaire  extends User
 
     #[ORM\OneToMany(mappedBy: 'gestionnaire', targetEntity: Produit::class)]
     private $produits;
+
+    #[ORM\OneToMany(mappedBy: 'gestionnaire', targetEntity: Commande::class)]
+    private $commandes;
     public function __construct()
     {
         parent::__construct();
        $this->setRoles(["ROLE_GESTIONNAIRE"]);
        $this->produits = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+       $this->commandes = new ArrayCollection();
     }
 
     public function getNom(): ?string
@@ -86,6 +80,36 @@ class Gestionnaire  extends User
             // set the owning side to null (unless already changed)
             if ($produit->getGestionnaire() === $this) {
                 $produit->setGestionnaire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): self
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes[] = $commande;
+            $commande->setGestionnaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): self
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getGestionnaire() === $this) {
+                $commande->setGestionnaire(null);
             }
         }
 

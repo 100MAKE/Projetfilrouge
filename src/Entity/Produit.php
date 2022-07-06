@@ -40,8 +40,6 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-   
-    
     private $id;
     
 
@@ -50,7 +48,7 @@ class Produit
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $nom;
 
-    #[Groups(["menu","write","portion:read:simple","burger","menus"])]
+    #[Groups(["menu","write","portion:read:simple","burger","menus","menus:write"])]
     #[ORM\Column(type: 'float', nullable: true)]
     private $prix;
     

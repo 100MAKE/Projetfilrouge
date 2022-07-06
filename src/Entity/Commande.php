@@ -36,6 +36,9 @@ class Commande
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     private $client;
 
+    #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'commandes')]
+    private $gestionnaire;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -126,6 +129,18 @@ class Commande
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getGestionnaire(): ?Gestionnaire
+    {
+        return $this->gestionnaire;
+    }
+
+    public function setGestionnaire(?Gestionnaire $gestionnaire): self
+    {
+        $this->gestionnaire = $gestionnaire;
 
         return $this;
     }

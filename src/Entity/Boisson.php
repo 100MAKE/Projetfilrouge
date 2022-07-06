@@ -25,7 +25,7 @@ class Boisson extends Produit
 {
 
     #[Groups(["write"])]
-    #[ORM\ManyToMany(targetEntity: Taille::class, mappedBy: 'boissons')]
+    #[ORM\ManyToMany(targetEntity: Taille::class, mappedBy: 'boissons',cascade:["persist"])]
     private $tailles;
 
     public function __construct()

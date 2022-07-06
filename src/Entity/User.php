@@ -4,9 +4,10 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\EmailValidationController;
-use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -33,10 +34,18 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             'deserialize' => false,
             'path'=>'users/validate/{token}',
             'controller' => EmailValidationController::class
-    
+       
         ]]
      )]
+#[ORM\InheritanceType("JOINED")]
+#[DiscriminatorColumn(name:"disc",type:"string")]
+#[DiscriminatorMap([
+    "user"=>"User",
+    "gestionnaire"=>"Gestionnaire",
+    "client"=>"Client",
+    "livreur"=>"Livreur"
 
+])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

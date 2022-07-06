@@ -30,7 +30,7 @@ class Burger extends Produit
 {
 
    
-    #[ORM\OneToMany(mappedBy: 'burger', targetEntity: MenuBurger::class)]
+    #[ORM\OneToMany(mappedBy: 'burger', targetEntity: MenuBurger::class,cascade:["persist"])]
     private $menuBurgers;
 
     public function __construct()

@@ -14,14 +14,14 @@ class MenuBurger
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    #[Groups(["menus"])]
+    // #[Groups(["menus"])]
     #[ORM\Column(type: 'integer')]
     private $quantite;
 
-    #[ORM\ManyToOne(targetEntity: Burger::class, inversedBy: 'menuBurgers')]
+    #[ORM\ManyToOne(targetEntity: Burger::class, inversedBy: 'menuBurgers',cascade:["persist"])]
     private $burger;
 
-    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuBurgers')]
+    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuBurgers',cascade:["persist"])]
     private $menu;
 
     public function getId(): ?int

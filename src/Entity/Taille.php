@@ -44,6 +44,9 @@ class Taille
     #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'tailles')]
     private $menus;
 
+    #[ORM\OneToMany(mappedBy: 'taille', targetEntity: MenuTaille::class)]
+    private $menuTailles;
+
 
     
 
@@ -51,6 +54,7 @@ class Taille
     {
         $this->boissons = new ArrayCollection();
         // $this->menus = new ArrayCollection();
+        $this->menuTailles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,6 +132,36 @@ class Taille
     {
         if ($this->menus->removeElement($menu)) {
             $menu->removeTaille($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MenuTaille>
+     */
+    public function getMenuTailles(): Collection
+    {
+        return $this->menuTailles;
+    }
+
+    public function addMenuTaille(MenuTaille $menuTaille): self
+    {
+        if (!$this->menuTailles->contains($menuTaille)) {
+            $this->menuTailles[] = $menuTaille;
+            $menuTaille->setTaille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenuTaille(MenuTaille $menuTaille): self
+    {
+        if ($this->menuTailles->removeElement($menuTaille)) {
+            // set the owning side to null (unless already changed)
+            if ($menuTaille->getTaille() === $this) {
+                $menuTaille->setTaille(null);
+            }
         }
 
         return $this;

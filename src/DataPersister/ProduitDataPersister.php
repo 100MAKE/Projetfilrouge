@@ -4,22 +4,23 @@
 
 namespace App\DataPersister;
 
-use App\Entity\Menu;
-use App\Services\CalculPrixMenuService;
+use App\Entity\Produit;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  *
  */
-class CalculPrixPersiter implements ContextAwareDataPersisterInterface
-{
-
-    public function __construct(EntityManagerInterface $entityManager, CalculPrixMenuService $calculPrixMenuService
-    ) {
+class ProduitDataPersister implements ContextAwareDataPersisterInterface
+{      private $entityManager;
+       private $security;
+    public function __construct(EntityManagerInterface $entityManager,Security $security) 
+    {
         $this->entityManager = $entityManager;
-        $this-> calculPrixMenuService = $calculPrixMenuService; 
+        $this->security = $security;
+        
     }
 
     /**
@@ -27,19 +28,16 @@ class CalculPrixPersiter implements ContextAwareDataPersisterInterface
      */
     public function supports($data, array $context = []): bool
     {
-        return $data instanceof Menu;
+        return $data instanceof Produit;
     }
 
     /**
-     * @param Menu $data
+     * @param Produit $data
      */
     public function persist($data, array $context = [])
     {
-        if ( $data instanceof Menu) {
-            
-            dd($data);
-            $prix=$this->calculPrixMenuService->getMenuPrice($data);
-             $data->setPrix($prix);
+        if ( $data instanceof Produit ) {
+            $data->setGestionnaire($this->security->getUser());
         }
         $this-> entityManager->persist($data);
         $this-> entityManager->flush();
