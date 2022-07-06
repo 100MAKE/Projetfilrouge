@@ -61,7 +61,7 @@ class Produit
 
      #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'produits')]
      private $commandes;
-     #[Groups(["menus"])]
+    //  #[Groups(["menus"])]
      #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'produits')]
       private $gestionnaire;
 

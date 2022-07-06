@@ -17,10 +17,10 @@ class MenuTaille
     private $id;
 
     #[Groups("menus")]
-    #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'menuTailles')]
+    #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'menuTailles',cascade:["persist"])]
     private $taille;
 
-    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuTailles')]
+    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuTailles',cascade:["persist"])]
     private $menu;
 
     #[Groups("menus")]
