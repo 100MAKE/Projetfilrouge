@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping\InheritanceType;
 use ApiPlatform\Core\Annotation\ApiResource;
+use phpDocumentor\Reflection\Types\Nullable;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\InheritanceType("JOINED")]
@@ -53,7 +54,7 @@ class Produit
     private $prix;
     
     #[Groups(["burger"])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'blob' ,nullable:true)]
     private $image;
 
      #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -64,6 +65,8 @@ class Produit
     //  #[Groups(["menus"])]
      #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'produits')]
       private $gestionnaire;
+     #[Groups(["menus"])]
+     protected string $fileImage;
 
      public function __construct()
      {
@@ -99,17 +102,7 @@ class Produit
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
 
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
 
     public function getEtat(): ?string
     {
@@ -123,13 +116,13 @@ class Produit
         return $this;
     }
 
-    // /**
-    //  * @return Collection<int, Commande>
-    //   */
-    // public function getCommandes(): Collection
-    // {
-    //     return $this->commandes;
-    // }
+    /**
+     * @return Collection<int, Commande>
+      */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
 
     public function addCommande(Commande $commande): self
     {
@@ -158,6 +151,39 @@ class Produit
     public function setGestionnaire(?Gestionnaire $gestionnaire): self
     {
         $this->gestionnaire = $gestionnaire;
+
+        return $this;
+    }
+
+    public function getFileImage(): ?string
+    {
+        return $this->fileImage;
+    }
+
+    public function setFileImage(string $fileImage): self
+    {
+        $this->fileImage = $fileImage;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of image
+     */ 
+    public function getImage()
+    {
+    return (is_resource($this->image)) ? utf8_encode(base64_encode(stream_get_contents($this->image))) : $this->image;
+    }
+
+    /**
+     * Set the value of image
+     *
+     * @return  self
+     */ 
+    public function setImage($image)
+    {
+        $this->image = $image;
+
 
         return $this;
     }

@@ -42,10 +42,15 @@ class ProduitDataPersister implements ContextAwareDataPersisterInterface
      * @param Produit $data
      */
     public function persist($data, array $context = [])
-    {
+    {    
+        // $data->getFileImage() 
         if ($data instanceof Produit) {
+           if ($data->getFileImage() ) {
+            $data->setImage(\file_get_contents($data->getFileImage()));
+           }
             $data->setGestionnaire($this->token->getToken()->getUser());
         }
+        // dd($data);
         if ($data instanceof Menu) {
             $data->setPrix($this->calculPrixMenu->priceMenu($data));
         }

@@ -137,35 +137,35 @@ class Taille
     //     return $this;
     // }
 
-    // /**
-    //  * @return Collection<int, MenuTaille>
-    //  */
-    // public function getMenuTailles(): Collection
-    // {
-    //     return $this->menuTailles;
-    // }
+    /**
+     * @return Collection<int, MenuTaille>
+     */
+    public function getMenuTailles(): Collection
+    {
+        return $this->menuTailles;
+    }
 
-    // public function addMenuTaille(MenuTaille $menuTaille): self
-    // {
-    //     if (!$this->menuTailles->contains($menuTaille)) {
-    //         $this->menuTailles[] = $menuTaille;
-    //         $menuTaille->setTaille($this);
-    //     }
+    public function addMenuTaille(MenuTaille $menuTaille): self
+    {
+        if (!$this->menuTailles->contains($menuTaille)) {
+            $this->menuTailles[] = $menuTaille;
+            $menuTaille->setTaille($this);
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
-    // public function removeMenuTaille(MenuTaille $menuTaille): self
-    // {
-    //     if ($this->menuTailles->removeElement($menuTaille)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($menuTaille->getTaille() === $this) {
-    //             $menuTaille->setTaille(null);
-    //         }
-    //     }
+    public function removeMenuTaille(MenuTaille $menuTaille): self
+    {
+        if ($this->menuTailles->removeElement($menuTaille)) {
+            // set the owning side to null (unless already changed)
+            if ($menuTaille->getTaille() === $this) {
+                $menuTaille->setTaille(null);
+            }
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
    
 
