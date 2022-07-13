@@ -26,18 +26,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
     
 //     )]
 #[ApiResource(
-    attributes: ["security" => "is_granted('ROLE_VISITEUR')"],
+    attributes: ["security" => "is_granted('ROLE_GESTIONNAIRE')"],
     collectionOperations: [
         "get"=>["normalization_context"=>["groups"=>["menus:write"]]],
         "post" => [ 
             // "security_post_denormalize" => "is_granted('BOOK_CREATE', object)",
              "normalization_context"=>["groups"=>["menus"]],
-            "denormalization_context"=>["groups"=>["menus"]]
+             "denormalization_context"=>["groups"=>["menus"]]
     ]],
     itemOperations: [
-        "get" => [ "security" => "is_granted('BOOK_READ', object)" ],
-        "put" => [ "security" => "is_granted('BOOK_EDIT', object)" ],
-        "delete" => [ "security" => "is_granted('BOOK_DELETE', object)" ],
+        "get" => [ "security" => "is_granted('G_READ', object)" ],
+        "put" => [ "security" => "is_granted('G_EDIT', object)" ],
+        "delete" => [ "security" => "is_granted('G_DELETE', object)" ],
     ],
 )]
 class Menu extends Produit

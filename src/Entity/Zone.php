@@ -2,24 +2,41 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ZoneRepository;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ZoneRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    collectionOperations:["get",
+    "post" => [
+        "method"=>"post",
+         "security"=>"is_granted('ROLE_GESTIONNAIRE')",
+         "security_message"=>"uniquement reserver aux gestionnaires",
+        "denormalization_context"=>['group'=>["zone"]],
+        'normalization_context' => ['groups' => ['zones']]
+
+       ]],
+    itemOperations:["put","get"]
+    
+      
+    
+    )]
 class Zone
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-
-    #[ORM\Column(type: 'string', length: 255)]
+    
+     #[Groups(['zone','zones'])]
+   #[ORM\Column(type: 'string', length: 255)]
     private $nom;
-
+    
+    #[Groups(['zone','zones'])]
     #[ORM\Column(type: 'integer')]
     private $pix;
 
