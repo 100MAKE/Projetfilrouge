@@ -27,12 +27,16 @@ class PortionFrite extends Produit
     #[ORM\OneToMany(mappedBy: 'portionfrite', targetEntity: MenuPortionFrite::class,cascade:["persist"])]
     private $menuPortionFrites;
 
+    #[ORM\OneToMany(mappedBy: 'portionfrite', targetEntity: CommandePortionFrite::class)]
+    private $commandePortionFrites;
+
     //  #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'portionfrites')]
     // private $menus;
 
     public function __construct()
     {
         $this->menuPortionFrites = new ArrayCollection();
+        $this->commandePortionFrites = new ArrayCollection();
     }
 
     // /**
@@ -86,6 +90,36 @@ class PortionFrite extends Produit
             // set the owning side to null (unless already changed)
             if ($menuPortionFrite->getPortionfrite() === $this) {
                 $menuPortionFrite->setPortionfrite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandePortionFrite>
+     */
+    public function getCommandePortionFrites(): Collection
+    {
+        return $this->commandePortionFrites;
+    }
+
+    public function addCommandePortionFrite(CommandePortionFrite $commandePortionFrite): self
+    {
+        if (!$this->commandePortionFrites->contains($commandePortionFrite)) {
+            $this->commandePortionFrites[] = $commandePortionFrite;
+            $commandePortionFrite->setPortionfrite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandePortionFrite(CommandePortionFrite $commandePortionFrite): self
+    {
+        if ($this->commandePortionFrites->removeElement($commandePortionFrite)) {
+            // set the owning side to null (unless already changed)
+            if ($commandePortionFrite->getPortionfrite() === $this) {
+                $commandePortionFrite->setPortionfrite(null);
             }
         }
 

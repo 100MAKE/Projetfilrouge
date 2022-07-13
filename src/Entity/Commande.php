@@ -9,8 +9,27 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommandeRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 
+
+#[ApiResource(
+    // attributes: ["security" => "is_granted('ROLE_USER')"],
+    collectionOperations: [
+        "post" => [
+            "security" => "is_granted('ROLE_CLIENT')",
+            "security_message" => "uniquement pour client",
+        ],
+    ],
+    itemOperations: [
+        "get" => [
+            "security" => "is_granted('ROLE_GESTIONNAIRE')",
+            "security_message" => "uniquement pour gestionnaire",
+    ],
+        "put" => [
+            "security_post_denormalize" => "is_granted('ROLE_GESTIONNAIRE')",
+            "security_post_denormalize_message" => "Sorry, but you are not the actual book owner.",
+        ],
+    ],
+    )]
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
-#[ApiResource()]
 class Commande
 {
     #[ORM\Id]
@@ -30,8 +49,7 @@ class Commande
     #[ORM\Column(type: 'string', length: 255)]
     private $etat;
 
-    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'commandes')]
-    private $produits;
+   
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     private $client;
@@ -39,9 +57,21 @@ class Commande
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'commandes')]
     private $gestionnaire;
 
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandePortionFrite::class)]
+    private $commandePortionFrites;
+
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeTaille::class)]
+    private $commandeTailles;
+
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeBurger::class)]
+    private $commandeBurgers;
+
+  
     public function __construct()
     {
-        $this->produits = new ArrayCollection();
+        $this->commandePortionFrites = new ArrayCollection();
+        $this->commandeTailles = new ArrayCollection();
+        $this->commandeBurgers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,30 +127,7 @@ class Commande
         return $this;
     }
 
-    /**
-     * @return Collection<int, Produit>
-     */
-    public function getProduits(): Collection
-    {
-        return $this->produits;
-    }
-
-    public function addProduit(Produit $produit): self
-    {
-        if (!$this->produits->contains($produit)) {
-            $this->produits[] = $produit;
-        }
-
-        return $this;
-    }
-
-    public function removeProduit(Produit $produit): self
-    {
-        $this->produits->removeElement($produit);
-
-        return $this;
-    }
-
+  
     public function getClient(): ?Client
     {
         return $this->client;
@@ -144,4 +151,95 @@ class Commande
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, CommandePortionFrite>
+     */
+    public function getCommandePortionFrites(): Collection
+    {
+        return $this->commandePortionFrites;
+    }
+
+    public function addCommandePortionFrite(CommandePortionFrite $commandePortionFrite): self
+    {
+        if (!$this->commandePortionFrites->contains($commandePortionFrite)) {
+            $this->commandePortionFrites[] = $commandePortionFrite;
+            $commandePortionFrite->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandePortionFrite(CommandePortionFrite $commandePortionFrite): self
+    {
+        if ($this->commandePortionFrites->removeElement($commandePortionFrite)) {
+            // set the owning side to null (unless already changed)
+            if ($commandePortionFrite->getCommande() === $this) {
+                $commandePortionFrite->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeTaille>
+     */
+    public function getCommandeTailles(): Collection
+    {
+        return $this->commandeTailles;
+    }
+
+    public function addCommandeTaille(CommandeTaille $commandeTaille): self
+    {
+        if (!$this->commandeTailles->contains($commandeTaille)) {
+            $this->commandeTailles[] = $commandeTaille;
+            $commandeTaille->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeTaille(CommandeTaille $commandeTaille): self
+    {
+        if ($this->commandeTailles->removeElement($commandeTaille)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeTaille->getCommande() === $this) {
+                $commandeTaille->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeBurger>
+     */
+    public function getCommandeBurgers(): Collection
+    {
+        return $this->commandeBurgers;
+    }
+
+    public function addCommandeBurger(CommandeBurger $commandeBurger): self
+    {
+        if (!$this->commandeBurgers->contains($commandeBurger)) {
+            $this->commandeBurgers[] = $commandeBurger;
+            $commandeBurger->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeBurger(CommandeBurger $commandeBurger): self
+    {
+        if ($this->commandeBurgers->removeElement($commandeBurger)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeBurger->getCommande() === $this) {
+                $commandeBurger->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

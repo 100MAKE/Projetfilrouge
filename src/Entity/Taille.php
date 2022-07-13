@@ -47,14 +47,17 @@ class Taille
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: MenuTaille::class)]
     private $menuTailles;
 
+    #[ORM\OneToMany(mappedBy: 'taille', targetEntity: CommandeTaille::class)]
+    private $commandeTailles;
+
 
     
 
     public function __construct()
     {
         $this->boissons = new ArrayCollection();
-        // $this->menus = new ArrayCollection();
         $this->menuTailles = new ArrayCollection();
+        $this->commandeTailles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +169,38 @@ class Taille
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, CommandeTaille>
+     */
+    public function getCommandeTailles(): Collection
+    {
+        return $this->commandeTailles;
+    }
+
+    public function addCommandeTaille(CommandeTaille $commandeTaille): self
+    {
+        if (!$this->commandeTailles->contains($commandeTaille)) {
+            $this->commandeTailles[] = $commandeTaille;
+            $commandeTaille->setTaille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeTaille(CommandeTaille $commandeTaille): self
+    {
+        if ($this->commandeTailles->removeElement($commandeTaille)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeTaille->getTaille() === $this) {
+                $commandeTaille->setTaille(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 
    
 

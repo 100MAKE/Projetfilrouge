@@ -14,7 +14,7 @@ use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- *
+ * 
  */
 class ProduitDataPersister implements ContextAwareDataPersisterInterface
 {
