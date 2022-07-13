@@ -22,6 +22,9 @@ class CommandeBurger
     #[ORM\ManyToOne(targetEntity: Burger::class, inversedBy: 'commandeBurgers')]
     private $burger;
 
+    #[ORM\Column(type: 'integer')]
+    private $prix;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class CommandeBurger
     public function setBurger(?Burger $burger): self
     {
         $this->burger = $burger;
+
+        return $this;
+    }
+
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(int $prix): self
+    {
+        $this->prix = $prix;
 
         return $this;
     }

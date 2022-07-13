@@ -22,6 +22,9 @@ class CommandePortionFrite
     #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'commandePortionFrites')]
     private $portionfrite;
 
+    #[ORM\Column(type: 'integer')]
+    private $prix;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class CommandePortionFrite
     public function setPortionfrite(?PortionFrite $portionfrite): self
     {
         $this->portionfrite = $portionfrite;
+
+        return $this;
+    }
+
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(int $prix): self
+    {
+        $this->prix = $prix;
 
         return $this;
     }

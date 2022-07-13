@@ -19,6 +19,9 @@ class Quartier
     #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
 
+    #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'quartiers')]
+    private $zone;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -32,6 +35,18 @@ class Quartier
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(?Zone $zone): self
+    {
+        $this->zone = $zone;
 
         return $this;
     }

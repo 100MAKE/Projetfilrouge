@@ -66,12 +66,16 @@ class Commande
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeBurger::class)]
     private $commandeBurgers;
 
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeMenu::class)]
+    private $commandeMenus;
+
   
     public function __construct()
     {
         $this->commandePortionFrites = new ArrayCollection();
         $this->commandeTailles = new ArrayCollection();
         $this->commandeBurgers = new ArrayCollection();
+        $this->commandeMenus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -236,6 +240,36 @@ class Commande
             // set the owning side to null (unless already changed)
             if ($commandeBurger->getCommande() === $this) {
                 $commandeBurger->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeMenu>
+     */
+    public function getCommandeMenus(): Collection
+    {
+        return $this->commandeMenus;
+    }
+
+    public function addCommandeMenu(CommandeMenu $commandeMenu): self
+    {
+        if (!$this->commandeMenus->contains($commandeMenu)) {
+            $this->commandeMenus[] = $commandeMenu;
+            $commandeMenu->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeMenu(CommandeMenu $commandeMenu): self
+    {
+        if ($this->commandeMenus->removeElement($commandeMenu)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeMenu->getCommande() === $this) {
+                $commandeMenu->setCommande(null);
             }
         }
 

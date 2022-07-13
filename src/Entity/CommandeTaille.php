@@ -22,6 +22,9 @@ class CommandeTaille
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeTailles')]
     private $commande;
 
+    #[ORM\Column(type: 'integer')]
+    private $prix;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class CommandeTaille
     public function setCommande(?Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(int $prix): self
+    {
+        $this->prix = $prix;
 
         return $this;
     }
