@@ -46,7 +46,7 @@ class ProduitDataPersister implements ContextAwareDataPersisterInterface
         // $data->getFileImage() 
         if ($data instanceof Produit) {
            if ($data->getFileImage() ) {
-            $data->setImage(\file_get_contents($data->getFileImage()));
+             $data->setImage(\file_get_contents($data->getFileImage()));
            }
             $data->setGestionnaire($this->token->getToken()->getUser());
         }
