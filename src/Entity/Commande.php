@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommandeRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ApiResource(
@@ -72,6 +73,7 @@ class Commande
   
     public function __construct()
     {
+        $this->etat="encours";
         $this->commandePortionFrites = new ArrayCollection();
         $this->commandeTailles = new ArrayCollection();
         $this->commandeBurgers = new ArrayCollection();
