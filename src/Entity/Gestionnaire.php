@@ -13,12 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource()]
 class Gestionnaire  extends User
 {
-    #[ORM\Column(type: 'string', length: 255)]
-    protected $nom;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    protected $prenom;
-
+   
     #[ORM\OneToMany(mappedBy: 'gestionnaire', targetEntity: Produit::class)]
     private $produits;
 
@@ -32,30 +27,7 @@ class Gestionnaire  extends User
        $this->commandes = new ArrayCollection();
     }
 
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
+  
     /**
      * @return Collection<int, Produit>
      */

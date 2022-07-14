@@ -12,18 +12,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 #[ApiResource()]
 class Client extends User
 {
-   
-    #[ORM\Column(type: 'string', length: 255)]
-    private $nom;
+ 
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $prenom;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $adresse;
-
-    #[ORM\Column(type: 'integer')]
-    private $numeroTelephone;
+ 
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Commande::class)]
     private $commandes;
@@ -39,54 +30,6 @@ class Client extends User
         
     }
   
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getAdresse(): ?string
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(string $adresse): self
-    {
-        $this->adresse = $adresse;
-
-        return $this;
-    }
-
-    public function getNumeroTelephone(): ?int
-    {
-        return $this->numeroTelephone;
-    }
-
-    public function setNumeroTelephone(int $numeroTelephone): self
-    {
-        $this->numeroTelephone = $numeroTelephone;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Commande>
