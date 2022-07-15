@@ -11,21 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
-// #[ORM\InheritanceType("JOINED")]
-// #[ApiResource(
-//     collectionOperations:["get",
-//     "post" => [
-//     "method"=>"post",
-//     // "security"=>"is_granted('ROLE_GESTIONNAIRE')",
-//     // "security_message"=>"uniquement reserver aux gestionnaires",
-//     // "denormalization_context"=>['group'=>["menu"]]
 
-//        ]],
-//     itemOperations:["put","get"]
-    
-      
-    
-//     )]
 #[ApiResource(
     attributes: ["security" => "is_granted('ROLE_GESTIONNAIRE')"],
     collectionOperations: [

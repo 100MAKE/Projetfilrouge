@@ -5,18 +5,20 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProduitCommandeRepository;
-#[ApiResource(
-    collectionOperations:["get",
-"post"=>[
-"method"=>"post",
-// "security"=>"is_granted('ROLE_GESTIONNAIRE')",
-"security_message"=>"uniquement reserver aux gestionnaires",
-'denormalization_context'=>['groups'=>['produit:read:simple']]
 
-    ]
-],
-    itemOperations:["put","get"]
-    )]
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post" => [
+            "method" => "post",
+            // "security"=>"is_granted('ROLE_GESTIONNAIRE')",
+            "security_message" => "uniquement reserver aux gestionnaires",
+            'denormalization_context' => ['groups' => ['produit:read:simple']]
+
+        ]
+    ],
+    itemOperations: ["put", "get"]
+)]
 
 #[ORM\Entity(repositoryClass: ProduitCommandeRepository::class)]
 class ProduitCommande

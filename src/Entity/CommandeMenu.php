@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\CommandeMenuRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommandeMenuRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeMenuRepository::class)]
 class CommandeMenu
@@ -13,12 +14,15 @@ class CommandeMenu
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Groups(['com:details:all', 'com:details'])]
     #[ORM\Column(type: 'integer')]
     private $quantite;
 
-    #[ORM\Column(type: 'integer')]
+
+    #[ORM\Column(type: 'integer',nullable: true)]
     private $prix;
 
+    #[Groups(['com:details:all', 'com:details'])]
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'commandeMenus')]
     private $menu;
 

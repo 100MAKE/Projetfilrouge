@@ -11,36 +11,45 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ZoneRepository::class)]
 #[ApiResource(
-    collectionOperations:["get",
-    "post" => [
-        "method"=>"post",
-         "security"=>"is_granted('ROLE_GESTIONNAIRE')",
-         "security_message"=>"uniquement reserver aux gestionnaires",
-        "denormalization_context"=>['group'=>["zone"]],
-        'normalization_context' => ['groups' => ['zones']]
+    collectionOperations: [
+        "post" => [
+            'denormalization_context' => ["groups" => ["zones:details"]],
+            "normalization_context" => ["groups" => ["zones:details:all"]]
+        ],
+    ]
+)]
+// #[ApiResource(
+//     collectionOperations:[ "get"=>["normalization_context"=>["groups"=>["zone"]]],
+//     "post" => [
+//         "method"=>"post",
+//          "security"=>"is_granted('ROLE_GESTIONNAIRE')",
+//          "security_message"=>"uniquement reserver aux gestionnaires",
+//         'denormalization_context'=>["group"=>["zones:details"]],
+//         // 'normalization_context' => ["groups" => ["zone"]]
 
-       ]],
-    itemOperations:["put","get"]
-    
-      
-    
-    )]
+//        ]],
+//     itemOperations:["put","get"]
+
+
+
+//     )]
 class Zone
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
-     #[Groups(['zone','zones'])]
-   #[ORM\Column(type: 'string', length: 255)]
+
+    #[Groups(['zones:details:all', 'zones:details'])]
+    #[ORM\Column(type: 'string', length: 255)]
     private $nom;
-    
-    #[Groups(['zone','zones'])]
+
+    #[Groups(['zones:details:all', 'zones:details'])]
     #[ORM\Column(type: 'integer')]
     private $pix;
 
-    #[ORM\OneToMany(mappedBy: 'zone', targetEntity: Quartier::class)]
+    #[Groups(['zones:details:all', 'zones:details'])]
+    #[ORM\OneToMany(mappedBy: 'zone', targetEntity: Quartier::class, cascade: ["persist"])]
     private $quartiers;
 
     public function __construct()

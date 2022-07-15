@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\CommandePortionFriteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommandePortionFriteRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandePortionFriteRepository::class)]
 class CommandePortionFrite
@@ -13,16 +14,18 @@ class CommandePortionFrite
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Groups(['com:details:all', 'com:details'])]
     #[ORM\Column(type: 'integer')]
     private $quantite;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandePortionFrites')]
     private $commande;
 
+    #[Groups(['com:details:all', 'com:details'])]
     #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'commandePortionFrites')]
     private $portionfrite;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer',nullable: true)]
     private $prix;
 
     public function getId(): ?int

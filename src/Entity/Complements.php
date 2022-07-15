@@ -21,7 +21,7 @@ class Complements
 
     public function __construct()
     {
-         $this->menus = new ArrayCollection();
+        $this->menus = new ArrayCollection();
         $this->tailles = new ArrayCollection();
         $this->portionfrites = new ArrayCollection();
     }

@@ -27,23 +27,24 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 //         ]
 // )]
 #[ApiResource(
-       collectionOperations:[
-            "post",
-            "VALIDATE" => [
-            "method"=>"PATCH",
+    collectionOperations: [
+        "post",
+        "VALIDATE" => [
+            "method" => "PATCH",
             'deserialize' => false,
-            'path'=>'users/validate/{token}',
+            'path' => 'users/validate/{token}',
             'controller' => EmailValidationController::class
-       
-        ]]
-     )]
+
+        ]
+    ]
+)]
 #[ORM\InheritanceType("JOINED")]
-#[DiscriminatorColumn(name:"disc",type:"string")]
+#[DiscriminatorColumn(name: "disc", type: "string")]
 #[DiscriminatorMap([
-    "user"=>"User",
-    "gestionnaire"=>"Gestionnaire",
-    "client"=>"Client",
-    "livreur"=>"Livreur"
+    "user" => "User",
+    "gestionnaire" => "Gestionnaire",
+    "client" => "Client",
+    "livreur" => "Livreur"
 
 ])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -54,10 +55,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read:simple'])]
     protected $id;
 
-    #[Groups(['user:read:simple','user:write'])]
+    #[Groups(['user:read:simple', 'user:write'])]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     protected $email;
-    
+
     #[ORM\Column(type: 'json')]
     #[Groups(['user:read:simple'])]
     protected $roles = [];
@@ -69,36 +70,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $plainPassword;
 
     #[ORM\Column(type: 'boolean')]
-     protected $isEnable=false;
+    protected $isEnable = false;
 
     #[ORM\Column(type: 'string', length: 255)]
-     protected $token;
+    protected $token;
 
     #[ORM\Column(type: 'datetime')]
-     protected $expireAt;
+    protected $expireAt;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $tel;
+    protected $tel;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $adresse;
+    protected $adresse;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $nom;
+    protected $nom;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $prenom;
-public function __construct()
-{
-    $this->generateToken();
-}
-public function generateToken(){
+    protected $prenom;
 
-    $this->token=str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(random_bytes(128)));
-    $this->expireAt=new \DateTime("+1 day");
+    public function __construct()
+    {
+        $this->generateToken();
+    }
+    public function generateToken()
+    {
 
-
-}
+        $this->token = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(random_bytes(128)));
+        $this->expireAt = new \DateTime("+1 day");
+    }
     public function getId(): ?int
     {
         return $this->id;

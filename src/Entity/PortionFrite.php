@@ -39,32 +39,7 @@ class PortionFrite extends Produit
         $this->commandePortionFrites = new ArrayCollection();
     }
 
-    // /**
-    //  * @return Collection<int, Menu>
-    //  */
-    // public function getMenus(): Collection
-    // {
-    //     return $this->menus;
-    // }
-
-    // public function addMenu(Menu $menu): self
-    // {
-    //     if (!$this->menus->contains($menu)) {
-    //         $this->menus[] = $menu;
-    //         $menu->addPortionfrite($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeMenu(Menu $menu): self
-    // {
-    //     if ($this->menus->removeElement($menu)) {
-    //         $menu->removePortionfrite($this);
-    //     }
-
-    //     return $this;
-    // }
+  
 
     /**
      * @return Collection<int, MenuPortionFrite>

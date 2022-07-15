@@ -11,66 +11,73 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use phpDocumentor\Reflection\Types\Nullable;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
+
 #[ORM\InheritanceType("JOINED")]
-#[ORM\DiscriminatorColumn(name:"type",type:"string")]
+#[ORM\DiscriminatorColumn(name: "type", type: "string")]
 #[ORM\DiscriminatorMap([
-"boisson"=>"Boisson",
- "burger"=>"Burger",
- "menu"=>"Menu",
- "portion"=>"PortionFrite"
- ])]
+    "boisson" => "Boisson",
+    "burger" => "Burger",
+    "menu" => "Menu",
+    "portion" => "PortionFrite"
+])]
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 
 #[ApiResource(
-    collectionOperations:[
-    "get",
-    "post" => [
-    'status' => Response::HTTP_CREATED,
-    'normalization_context' => ['groups' => ['write:simple','write'],
-    "denormalization_context"=>["groups"=>["menu"]]
-],
-        ]    
+    collectionOperations: [
+        "get",
+        "post" => [
+            'status' => Response::HTTP_CREATED,
+            'normalization_context' => [
+                'groups' => ['write:simple', 'write'],
+                "denormalization_context" => ["groups" => ["menu"]]
+            ],
+        ]
 
     ],
-    itemOperations:["put","get"])]
+    itemOperations: ["put", "get"]
+)]
 
 class Produit
 {
-    
+
     #[Groups(["menus"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
 
-    
-    #[Groups(["menu","write","portion:read:simple","burger","menus"])]
+
+
+    #[Groups(["menu", "write", "portion:read:simple", "burger", "menus"])]
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $nom;
 
-    #[Groups(["menu","write","portion:read:simple","burger","menus","menus:write"])]
-    #[ORM\Column(type: 'float', nullable: true)]
+    #[Groups(["menu", "write", "portion:read:simple", "burger", "menus", "menus:write"])]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $prix;
-    
+
     #[Groups(["burger"])]
-    #[ORM\Column(type: 'blob' ,nullable:true)]
+    #[ORM\Column(type: 'blob', nullable: true)]
     private $image;
 
-     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-     private $etat;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $etat;
 
-     #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'produits')]
-     private $commandes;
-    //  #[Groups(["menus"])]
-     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'produits')]
-      private $gestionnaire;
-     #[Groups(["menus"])]
-     protected string $fileImage;
+    #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'produits')]
+    private $commandes;
 
-     public function __construct()
-     {
-     }
+
+
+    #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'produits')]
+    private $gestionnaire;
+
+
+    #[Groups(["menus"])]
+    protected string $fileImage;
+
+    public function __construct()
+    {
+    }
 
     public function getId(): ?int
     {
@@ -89,12 +96,12 @@ class Produit
         return $this;
     }
 
-    public function getPrix(): ?float
+    public function getPrix(): ?int
     {
         return $this->prix;
     }
 
-    public function setPrix(?float $prix): self
+    public function setPrix(?int $prix): self
     {
         $this->prix = $prix;
 
@@ -115,7 +122,7 @@ class Produit
         return $this;
     }
 
-    
+
 
     public function getGestionnaire(): ?Gestionnaire
     {
@@ -143,17 +150,17 @@ class Produit
 
     /**
      * Get the value of image
-     */ 
+     */
     public function getImage()
     {
-    return (is_resource($this->image)) ? utf8_encode(base64_encode(stream_get_contents($this->image))) : $this->image;
+        return (is_resource($this->image)) ? utf8_encode(base64_encode(stream_get_contents($this->image))) : $this->image;
     }
 
     /**
      * Set the value of image
      *
      * @return  self
-     */ 
+     */
     public function setImage($image)
     {
         $this->image = $image;

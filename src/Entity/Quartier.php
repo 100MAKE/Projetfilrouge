@@ -5,19 +5,23 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\QuartierRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuartierRepository::class)]
 #[ApiResource()]
 
 class Quartier
 {
+    //  #[Groups(['zones:details:all', 'zones:details'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Groups(['zones:details:all', 'zones:details'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
+
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'quartiers')]
     private $zone;

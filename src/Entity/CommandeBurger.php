@@ -2,8 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\CommandeBurgerRepository;
+
+
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommandeBurgerRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeBurgerRepository::class)]
 class CommandeBurger
@@ -13,16 +17,20 @@ class CommandeBurger
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Assert\Positive]
+    #[Groups(['com:details:all', 'com:details'])]
     #[ORM\Column(type: 'integer')]
     private $quantite;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeBurgers')]
     private $commande;
+    #[Groups(['com:details:all', 'com:details'])]
 
     #[ORM\ManyToOne(targetEntity: Burger::class, inversedBy: 'commandeBurgers')]
     private $burger;
+    // #[Groups(['com:details:all', 'com:details'])]
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer',nullable: true)]
     private $prix;
 
     public function getId(): ?int

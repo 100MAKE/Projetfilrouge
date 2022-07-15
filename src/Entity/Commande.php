@@ -3,20 +3,23 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Validator\Constraints as Assert;
-
+use Doctrine\Common\Collections\ArrayCollection;
+ use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ApiResource(
     // attributes: ["security" => "is_granted('ROLE_USER')"],
     collectionOperations: [
         "post" => [
-            "security" => "is_granted('ROLE_CLIENT')",
+            // "security" => "is_granted('ROLE_CLIENT')",
             "security_message" => "uniquement pour client",
+            'denormalization_context' => ["groups" => ["com:details"]],
+            "normalization_context" => ["groups" => ["com:details:all"]]
         ],
     ],
     itemOperations: [
@@ -38,19 +41,17 @@ class Commande
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer')]
-    private $numCommande;
+     #[ORM\Column(type: 'integer',nullable: true)]
+     private $numCommande;
 
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'date',nullable: true)]
     private $date;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer',nullable: true)]
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $etat;
-
-   
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     private $client;
@@ -58,16 +59,20 @@ class Commande
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'commandes')]
     private $gestionnaire;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandePortionFrite::class)]
+    #[Groups(['com:details:all', 'com:details'])]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandePortionFrite::class,cascade:["persist"])]
     private $commandePortionFrites;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeTaille::class)]
+    #[Groups(['com:details:all', 'com:details'])]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeTaille::class,cascade:["persist"])]
     private $commandeTailles;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeBurger::class)]
+    #[Groups(['com:details:all', 'com:details'])]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeBurger::class,cascade:["persist"])]
     private $commandeBurgers;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeMenu::class)]
+    #[Groups(['com:details:all', 'com:details'])]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeMenu::class,cascade:["persist"])]
     private $commandeMenus;
 
   

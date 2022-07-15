@@ -10,17 +10,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: MenuTailleRepository::class)]
 #[ApiResource()]
 class MenuTaille
-{   #[Groups("menus")]
+{
+    #[Groups("menus")]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[Groups("menus")]
-    #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'menuTailles',cascade:["persist"])]
+    #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'menuTailles', cascade: ["persist"])]
     private $taille;
 
-    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuTailles',cascade:["persist"])]
+    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuTailles', cascade: ["persist"])]
     private $menu;
 
     #[Groups("menus")]

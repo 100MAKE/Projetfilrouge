@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource()]
 class Gestionnaire  extends User
 {
-   
+
     #[ORM\OneToMany(mappedBy: 'gestionnaire', targetEntity: Produit::class)]
     private $produits;
 
@@ -22,12 +22,12 @@ class Gestionnaire  extends User
     public function __construct()
     {
         parent::__construct();
-       $this->setRoles(["ROLE_GESTIONNAIRE"]);
-       $this->produits = new ArrayCollection();
-       $this->commandes = new ArrayCollection();
+        $this->setRoles(["ROLE_GESTIONNAIRE"]);
+        $this->produits = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
-  
+
     /**
      * @return Collection<int, Produit>
      */

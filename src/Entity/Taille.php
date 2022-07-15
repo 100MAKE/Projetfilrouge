@@ -30,7 +30,7 @@ class Taille
     private $id;
     
     #[Groups(['write',"menus"])]
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: 'integer',nullable: true)]
     private $prix;
 
     #[Groups(['write',"menus"])]
@@ -65,12 +65,12 @@ class Taille
         return $this->id;
     }
 
-    public function getPrix(): ?float
+    public function getPrix(): ?int
     {
         return $this->prix;
     }
 
-    public function setPrix(float $prix): self
+    public function setPrix(int $prix): self
     {
         $this->prix = $prix;
 
@@ -113,32 +113,6 @@ class Taille
         return $this;
     }
 
-    // /**
-    //  * @return Collection<int, Menu>
-    //  */
-    // public function getMenus(): Collection
-    // {
-    //     return $this->menus;
-    // }
-
-    // public function addMenu(Menu $menu): self
-    // {
-    //     if (!$this->menus->contains($menu)) {
-    //         $this->menus[] = $menu;
-    //         $menu->addTaille($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeMenu(Menu $menu): self
-    // {
-    //     if ($this->menus->removeElement($menu)) {
-    //         $menu->removeTaille($this);
-    //     }
-
-    //     return $this;
-    // }
 
     /**
      * @return Collection<int, MenuTaille>
