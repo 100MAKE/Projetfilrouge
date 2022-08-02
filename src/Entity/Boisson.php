@@ -13,50 +13,60 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations:[
         "post" => [
-         "method"=>"post",
+            "method"=>"post",
         //  "security"=>"is_granted('ROLE_GESTIONNAIRE')",
         //  "security_message"=>"uniquement reserver aux gestionnaires",
-         "denormalization_context"=>['group'=>["write"]]
+        "normalization_context"=>["groups"=>["menus"]],
+
+         "denormalization_context"=>['group'=>["menus"]]
  
         ],
         "get" ]
   )]
 class Boisson extends Produit
 {
+    #[Groups("details")]
+    #[ORM\OneToMany(mappedBy: 'boisson', targetEntity: TailleBoisson::class)]
+    private $tailleBoissons;
 
-    #[Groups(["write"])]
-    #[ORM\ManyToMany(targetEntity: Taille::class, mappedBy: 'boissons',cascade:["persist"])]
-    private $tailles;
+   
+    
 
     public function __construct()
     {
-        $this->tailles = new ArrayCollection();
+        $this->tailleBoissons = new ArrayCollection();
     }
 
+  
     /**
-     * @return Collection<int, Taille>
+     * @return Collection<int, TailleBoisson>
      */
-    public function getTailles(): Collection
+    public function getTailleBoissons(): Collection
     {
-        return $this->tailles;
+        return $this->tailleBoissons;
     }
 
-    public function addTaille(Taille $taille): self
+    public function addTailleBoisson(TailleBoisson $tailleBoisson): self
     {
-        if (!$this->tailles->contains($taille)) {
-            $this->tailles[] = $taille;
-            $taille->addBoisson($this);
+        if (!$this->tailleBoissons->contains($tailleBoisson)) {
+            $this->tailleBoissons[] = $tailleBoisson;
+            $tailleBoisson->setBoisson($this);
         }
 
         return $this;
     }
 
-    public function removeTaille(Taille $taille): self
+    public function removeTailleBoisson(TailleBoisson $tailleBoisson): self
     {
-        if ($this->tailles->removeElement($taille)) {
-            $taille->removeBoisson($this);
+        if ($this->tailleBoissons->removeElement($tailleBoisson)) {
+            // set the owning side to null (unless already changed)
+            if ($tailleBoisson->getBoisson() === $this) {
+                $tailleBoisson->setBoisson(null);
+            }
         }
 
         return $this;
     }
+
+ 
 }

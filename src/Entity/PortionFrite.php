@@ -30,6 +30,9 @@ class PortionFrite extends Produit
     #[ORM\OneToMany(mappedBy: 'portionfrite', targetEntity: CommandePortionFrite::class)]
     private $commandePortionFrites;
 
+    // #[ORM\ManyToOne(targetEntity: Details::class, inversedBy: 'portionfrites')]
+    // private $details;
+
     //  #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'portionfrites')]
     // private $menus;
 
@@ -97,6 +100,18 @@ class PortionFrite extends Produit
                 $commandePortionFrite->setPortionfrite(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDetails(): ?Details
+    {
+        return $this->details;
+    }
+
+    public function setDetails(?Details $details): self
+    {
+        $this->details = $details;
 
         return $this;
     }

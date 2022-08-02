@@ -7,17 +7,25 @@ use App\Repository\CatalogueRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
-    collectionOperations:["get"]
+    collectionOperations:["get"=>[
+        "normalization_context"=>["groups"=>["catalogue"]],
+
+    ]],
+    itemOperations:["get"]
 )]
 
 class Catalogue
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+  
     private $id;
+    
+    #[Groups("catalogue")]
     private $menus;
+
+
+    #[Groups("catalogue")]
     private $burgers;
 
     public function __construct()

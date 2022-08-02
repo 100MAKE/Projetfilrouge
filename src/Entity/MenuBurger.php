@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MenuBurgerRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: MenuBurgerRepository::class)]
 #[ApiResource()]
@@ -16,7 +18,7 @@ class MenuBurger
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-
+    #[Assert\NotBlank(message: 'la quantité ne peut etre null')]
     #[Groups(["menus"])]
     #[ORM\Column(type: 'integer')]
     private $quantite;

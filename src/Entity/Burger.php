@@ -17,8 +17,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "method"=>"post",
         // "security"=>"is_granted('ROLE_GESTIONNAIRE')",
         // "security_message"=>"uniquement reserver aux gestionnaires",
-        "denormalization_context"=>['group'=>["write"]],
-        'normalization_context' => ['groups' => ['burger']]
+             "denormalization_context"=>["groups"=>["menus"]],
+        'normalization_context' => ['groups' => ['menus']]
 
        ]],
     itemOperations:["put","get"]
@@ -29,6 +29,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Burger extends Produit
 {
 
+    #[Groups("details")]
    
     #[ORM\OneToMany(mappedBy: 'burger', targetEntity: MenuBurger::class,cascade:["persist"])]
     private $menuBurgers;

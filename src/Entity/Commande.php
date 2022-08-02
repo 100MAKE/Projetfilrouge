@@ -64,10 +64,6 @@ class Commande
     private $commandePortionFrites;
 
     #[Groups(['com:details:all', 'com:details'])]
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeTaille::class,cascade:["persist"])]
-    private $commandeTailles;
-
-    #[Groups(['com:details:all', 'com:details'])]
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeBurger::class,cascade:["persist"])]
     private $commandeBurgers;
 
@@ -75,14 +71,17 @@ class Commande
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeMenu::class,cascade:["persist"])]
     private $commandeMenus;
 
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeTailleBoisson::class)]
+    private $commandeTailleBoissons;
+
   
     public function __construct()
     {
         $this->etat="encours";
         $this->commandePortionFrites = new ArrayCollection();
-        $this->commandeTailles = new ArrayCollection();
         $this->commandeBurgers = new ArrayCollection();
         $this->commandeMenus = new ArrayCollection();
+        $this->commandeTailleBoissons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -193,35 +192,35 @@ class Commande
         return $this;
     }
 
-    /**
-     * @return Collection<int, CommandeTaille>
-     */
-    public function getCommandeTailles(): Collection
-    {
-        return $this->commandeTailles;
-    }
+    // /**
+    //  * @return Collection<int, CommandeTaille>
+    //  */
+    // public function getCommandeTailles(): Collection
+    // {
+    //     return $this->commandeTailles;
+    // }
 
-    public function addCommandeTaille(CommandeTaille $commandeTaille): self
-    {
-        if (!$this->commandeTailles->contains($commandeTaille)) {
-            $this->commandeTailles[] = $commandeTaille;
-            $commandeTaille->setCommande($this);
-        }
+    // public function addCommandeTaille(CommandeTaille $commandeTaille): self
+    // {
+    //     if (!$this->commandeTailles->contains($commandeTaille)) {
+    //         $this->commandeTailles[] = $commandeTaille;
+    //         $commandeTaille->setCommande($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeCommandeTaille(CommandeTaille $commandeTaille): self
-    {
-        if ($this->commandeTailles->removeElement($commandeTaille)) {
-            // set the owning side to null (unless already changed)
-            if ($commandeTaille->getCommande() === $this) {
-                $commandeTaille->setCommande(null);
-            }
-        }
+    // public function removeCommandeTaille(CommandeTaille $commandeTaille): self
+    // {
+    //     if ($this->commandeTailles->removeElement($commandeTaille)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($commandeTaille->getCommande() === $this) {
+    //             $commandeTaille->setCommande(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, CommandeBurger>
@@ -277,6 +276,36 @@ class Commande
             // set the owning side to null (unless already changed)
             if ($commandeMenu->getCommande() === $this) {
                 $commandeMenu->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeTailleBoisson>
+     */
+    public function getCommandeTailleBoissons(): Collection
+    {
+        return $this->commandeTailleBoissons;
+    }
+
+    public function addCommandeTailleBoisson(CommandeTailleBoisson $commandeTailleBoisson): self
+    {
+        if (!$this->commandeTailleBoissons->contains($commandeTailleBoisson)) {
+            $this->commandeTailleBoissons[] = $commandeTailleBoisson;
+            $commandeTailleBoisson->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeTailleBoisson(CommandeTailleBoisson $commandeTailleBoisson): self
+    {
+        if ($this->commandeTailleBoissons->removeElement($commandeTailleBoisson)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeTailleBoisson->getCommande() === $this) {
+                $commandeTailleBoisson->setCommande(null);
             }
         }
 

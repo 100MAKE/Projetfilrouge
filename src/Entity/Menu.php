@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 
 #[ApiResource(
-    attributes: ["security" => "is_granted('ROLE_GESTIONNAIRE')"],
+    // attributes: ["security" => "is_granted('ROLE_GESTIONNAIRE')"],
     collectionOperations: [
         "get"=>["normalization_context"=>["groups"=>["menus:write"]]],
         "post" => [ 
@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Menu extends Produit
 {
     
-  
+    
     #[Groups("menus")]
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuBurger::class,cascade:["persist"])]
     private $menuBurgers;

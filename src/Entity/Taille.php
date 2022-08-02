@@ -37,27 +37,25 @@ class Taille
     #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
 
-    // #[Groups("menus")]
-    #[ORM\ManyToMany(targetEntity: Boisson::class, inversedBy: 'tailles')]
-    private $boissons;
-
-    #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'tailles')]
-    private $menus;
+    
 
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: MenuTaille::class)]
     private $menuTailles;
 
-    #[ORM\OneToMany(mappedBy: 'taille', targetEntity: CommandeTaille::class)]
-    private $commandeTailles;
+  
+
+    #[ORM\OneToMany(mappedBy: 'taille', targetEntity: TailleBoisson::class)]
+    private $tailleBoissons;
 
 
     
 
     public function __construct()
     {
-        $this->boissons = new ArrayCollection();
+        // $this->boissons = new ArrayCollection();
         $this->menuTailles = new ArrayCollection();
-        $this->commandeTailles = new ArrayCollection();
+        // $this->commandeTailles = new ArrayCollection();
+        $this->tailleBoissons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,29 +87,7 @@ class Taille
         return $this;
     }
 
-    /**
-     * @return Collection<int, Boisson>
-     */
-    public function getBoissons(): Collection
-    {
-        return $this->boissons;
-    }
-
-    public function addBoisson(Boisson $boisson): self
-    {
-        if (!$this->boissons->contains($boisson)) {
-            $this->boissons[] = $boisson;
-        }
-
-        return $this;
-    }
-
-    public function removeBoisson(Boisson $boisson): self
-    {
-        $this->boissons->removeElement($boisson);
-
-        return $this;
-    }
+    
 
 
     /**
@@ -144,30 +120,32 @@ class Taille
         return $this;
     }
 
+   
+
     /**
-     * @return Collection<int, CommandeTaille>
+     * @return Collection<int, TailleBoisson>
      */
-    public function getCommandeTailles(): Collection
+    public function getTailleBoissons(): Collection
     {
-        return $this->commandeTailles;
+        return $this->tailleBoissons;
     }
 
-    public function addCommandeTaille(CommandeTaille $commandeTaille): self
+    public function addTailleBoisson(TailleBoisson $tailleBoisson): self
     {
-        if (!$this->commandeTailles->contains($commandeTaille)) {
-            $this->commandeTailles[] = $commandeTaille;
-            $commandeTaille->setTaille($this);
+        if (!$this->tailleBoissons->contains($tailleBoisson)) {
+            $this->tailleBoissons[] = $tailleBoisson;
+            $tailleBoisson->setTaille($this);
         }
 
         return $this;
     }
 
-    public function removeCommandeTaille(CommandeTaille $commandeTaille): self
+    public function removeTailleBoisson(TailleBoisson $tailleBoisson): self
     {
-        if ($this->commandeTailles->removeElement($commandeTaille)) {
+        if ($this->tailleBoissons->removeElement($tailleBoisson)) {
             // set the owning side to null (unless already changed)
-            if ($commandeTaille->getTaille() === $this) {
-                $commandeTaille->setTaille(null);
+            if ($tailleBoisson->getTaille() === $this) {
+                $tailleBoisson->setTaille(null);
             }
         }
 
