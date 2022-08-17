@@ -16,20 +16,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Details
 {
-    #[Groups("details")]
-    public ?int $id = null;
+   
+     public ?int $id = null;
 
-    #[Groups("details")]
-    public ?Menu $menu = null;
-
-    #[Groups("details")]
-    public ?Burger $burger = null;
-
-    #[Groups("details")]
-    public array $boisson;
     
     #[Groups("details")]
-    public array $portionfrite;
+    public Burger|Menu $produit ;
+    
+    #[Groups("details")]
+    public array $boissons;
+    
+    #[Groups("details")]
+    public array $frites;
 
    
 }

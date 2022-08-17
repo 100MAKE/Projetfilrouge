@@ -29,8 +29,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Burger extends Produit
 {
 
-    #[Groups("details")]
-   
     #[ORM\OneToMany(mappedBy: 'burger', targetEntity: MenuBurger::class,cascade:["persist"])]
     private $menuBurgers;
 

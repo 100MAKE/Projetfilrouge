@@ -4,17 +4,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommandeMenuRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeMenuRepository::class)]
+#[ApiResource()]
+
 class CommandeMenu
-{
+{  
     #[ORM\Id]
+    #[Groups(['com','comr'])]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(['com:details:all', 'com:details'])]
+    #[Groups(['com','comr'])]
     #[ORM\Column(type: 'integer')]
     private $quantite;
 
@@ -22,7 +26,7 @@ class CommandeMenu
     #[ORM\Column(type: 'integer',nullable: true)]
     private $prix;
 
-    #[Groups(['com:details:all', 'com:details'])]
+    #[Groups(['com'])]
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'commandeMenus')]
     private $menu;
 

@@ -42,6 +42,8 @@ class CommandeDataPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {    
+        // dd($data);
+
     //     foreach ($data->getCommandeTailles() as $taille ) {
          
     //     $som1=$taille->getTaille()->getPrix()*$taille->getQuantite();
@@ -55,12 +57,15 @@ class CommandeDataPersister implements ContextAwareDataPersisterInterface
        
         $som3=$men->getMenu()->getPrix()*$men->getQuantite();
 
+
        }
+   
+
 
        $data->setMontant($som2+$som3);
 
 
-       $data->setClient($this->token->getUser());
+    //    $data->setClient($this->token->getUser());
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

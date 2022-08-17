@@ -3,28 +3,32 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CommandePortionFriteRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandePortionFriteRepository::class)]
+#[ApiResource()]
+
 class CommandePortionFrite
-{
+{   
     #[ORM\Id]
+    #[Groups(['com','comr'])]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(['com:details:all', 'com:details'])]
+    #[Groups(['com','comr'])]
     #[ORM\Column(type: 'integer')]
     private $quantite;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandePortionFrites')]
     private $commande;
 
-    #[Groups(['com:details:all', 'com:details'])]
+    #[Groups(['com'])]
     #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'commandePortionFrites')]
     private $portionfrite;
-
+    
     #[ORM\Column(type: 'integer',nullable: true)]
     private $prix;
 

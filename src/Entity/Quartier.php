@@ -12,17 +12,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Quartier
 {
-    //  #[Groups(['zones:details:all', 'zones:details'])]
+    // #[Groups(['zones:details:all', 'zones:details'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(['zones:details:all', 'zones:details'])]
+    // #[Groups(['zone:details:all', 'zone:details'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
 
-
+    // #[Groups(['zones:details:all', 'zones:details'])]
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'quartiers')]
     private $zone;
 

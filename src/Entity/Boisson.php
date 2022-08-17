@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
   )]
 class Boisson extends Produit
 {
-    #[Groups("details")]
+   
     #[ORM\OneToMany(mappedBy: 'boisson', targetEntity: TailleBoisson::class)]
     private $tailleBoissons;
 

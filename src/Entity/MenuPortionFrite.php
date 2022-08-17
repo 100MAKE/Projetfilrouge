@@ -14,9 +14,10 @@ class MenuPortionFrite
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups("details")]
     private $id;
 
-    #[Groups("menus")]
+    #[Groups("details")]
     #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'menuPortionFrites', cascade: ["persist"])]
     private $portionfrite;
 

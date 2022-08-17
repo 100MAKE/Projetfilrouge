@@ -16,6 +16,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'denormalization_context' => ["groups" => ["zones:details"]],
             "normalization_context" => ["groups" => ["zones:details:all"]]
         ],
+        "get" => [
+            'denormalization_context' => ["groups" => ["zone:details"]],
+            "normalization_context" => ["groups" => ["zone:details:all"]]
+        ],
     ]
 )]
 // #[ApiResource(
@@ -34,17 +38,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 //     )]
 class Zone
-{
+    {    
     #[ORM\Id]
+    #[Groups(['comr','com','zone:details:all', 'zone:details'])]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(['zones:details:all', 'zones:details'])]
+    #[Groups(['zone:details:all', 'zone:details','comr','com'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $nom;
 
-    #[Groups(['zones:details:all', 'zones:details'])]
+    #[Groups(['zone:details:all', 'zone:details','comr','com'])]
     #[ORM\Column(type: 'integer')]
     private $pix;
 
@@ -52,9 +57,15 @@ class Zone
     #[ORM\OneToMany(mappedBy: 'zone', targetEntity: Quartier::class, cascade: ["persist"])]
     private $quartiers;
 
+    #[ORM\OneToMany(mappedBy: 'zone', targetEntity: Commande::class, cascade: ["persist"])]
+    private $commandes;
+
+  
+
     public function __construct()
     {
         $this->quartiers = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -115,4 +126,36 @@ class Zone
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): self
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes[] = $commande;
+            $commande->setZone($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): self
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getZone() === $this) {
+                $commande->setZone(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
 }

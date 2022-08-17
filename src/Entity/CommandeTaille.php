@@ -3,22 +3,23 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CommandeTailleRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeTailleRepository::class)]
+#[ApiResource()]
+
 class CommandeTaille
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
- 
-    #[Groups(['com:details:all', 'com:details'])]
+    
     #[ORM\Column(type: 'integer')]
     private $quantite;
-
-    #[Groups(['com:details:all', 'com:details'])]
+    
     #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'commandeTailles')]
     private $taille;
 

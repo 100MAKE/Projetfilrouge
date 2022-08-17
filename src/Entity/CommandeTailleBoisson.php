@@ -2,24 +2,31 @@
 
 namespace App\Entity;
 
-use App\Repository\CommandeTailleBoissonRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\CommandeTailleBoissonRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeTailleBoissonRepository::class)]
+#[ApiResource()]
+
 class CommandeTailleBoisson
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['com','comr'])]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['com','comr'])]
     private $quantite;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeTailleBoissons')]
     private $commande;
 
-    #[ORM\ManyToOne(targetEntity: TailleBoisson::class, inversedBy: 'commandeTailleBoissons')]
+    #[Groups(['com'])]
+    #[ORM\ManyToOne(targetEntity: TailleBoisson::class, inversedBy: 'commandeTailleBoissons', cascade:["persist"])]
     private $tailleboisson;
 
     public function getId(): ?int

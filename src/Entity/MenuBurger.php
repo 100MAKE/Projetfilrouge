@@ -7,23 +7,27 @@ use App\Repository\MenuBurgerRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 
 #[ORM\Entity(repositoryClass: MenuBurgerRepository::class)]
 #[ApiResource()]
 class MenuBurger
 {
-    #[Groups("menus")]
+    #[Groups("details")]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+    
+
+    #[SerializedName("quantiteStock")]
+    #[Groups(["details"])]
     #[Assert\NotBlank(message: 'la quantité ne peut etre null')]
-    #[Groups(["menus"])]
     #[ORM\Column(type: 'integer')]
     private $quantite;
 
-    #[Groups("menus")]
+    #[Groups("details")]
     #[ORM\ManyToOne(targetEntity: Burger::class, inversedBy: 'menuBurgers', cascade: ["persist"])]
     private $burger;
 

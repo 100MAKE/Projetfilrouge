@@ -2,10 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\TailleBoissonRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Taille;
+use App\Entity\Boisson;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\CommandeTailleBoisson;
+use App\Repository\TailleBoissonRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: TailleBoissonRepository::class)]
 class TailleBoisson
@@ -13,15 +18,19 @@ class TailleBoisson
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["details","com"])]
     private $id;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[SerializedName("quantiteStock")]
+    #[Groups(["details"])]
     private $quantite;
 
     #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'tailleBoissons')]
     private $taille;
-
+    
     #[ORM\ManyToOne(targetEntity: Boisson::class, inversedBy: 'tailleBoissons')]
+    #[Groups(["details"])]
     private $boisson;
 
     #[ORM\OneToMany(mappedBy: 'tailleboisson', targetEntity: CommandeTailleBoisson::class)]

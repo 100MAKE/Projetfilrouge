@@ -36,11 +36,9 @@ class DetailsDataProvider implements  RestrictedDataProviderInterface,ItemDataPr
     {   $details= new Details;
         // dd($details);
         $details->id=$id;
-        ($this->menu->find($id)!=null)?
-        $details->menu=$this->menu->find($id):
-        $details->burger=$this->burger->find($id);
-        $details->boisson=$this->boisson->findAll();
-        $details-> portionfrite=$this->portionFrite->findAll();
+        $details->produit=($this->menu->find($id)!=null)?$this->menu->find($id):$this->burger->find($id);
+        $details->boissons=$this->boisson->findAll();
+        $details-> frites=$this->portionFrite->findAll();
 //   dd($details);
         return $details;
     }

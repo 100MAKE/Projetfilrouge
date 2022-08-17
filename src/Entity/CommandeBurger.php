@@ -2,35 +2,39 @@
 
 namespace App\Entity;
 
-
-
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Burger;
+use App\Entity\Commande;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CommandeBurgerRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommandeBurgerRepository::class)]
+#[ApiResource()]
 class CommandeBurger
 {
+    // #[Groups(['com'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['com','comr'])]
     private $id;
 
     #[Assert\Positive]
-    #[Groups(['com:details:all', 'com:details'])]
+    #[Groups(['com','comr'])]
     #[ORM\Column(type: 'integer')]
     private $quantite;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeBurgers')]
     private $commande;
-    #[Groups(['com:details:all', 'com:details'])]
 
+    #[Groups(['com'])]
     #[ORM\ManyToOne(targetEntity: Burger::class, inversedBy: 'commandeBurgers')]
     private $burger;
     // #[Groups(['com:details:all', 'com:details'])]
 
-    #[ORM\Column(type: 'integer',nullable: true)]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $prix;
 
     public function getId(): ?int

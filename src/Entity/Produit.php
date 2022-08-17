@@ -41,7 +41,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class Produit
 {
 
-    #[Groups(["menus","catalogue","details"])]
+    #[Groups(["menus","catalogue","details","com"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -75,6 +75,10 @@ class Produit
     #[SerializedName('images')]
     #[Groups(["menus","write"])]
     protected string $fileImage;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(["details"])]
+    private $description;
 
     public function __construct()
     {
@@ -176,6 +180,18 @@ class Produit
     {
         $this->image = $image;
 
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

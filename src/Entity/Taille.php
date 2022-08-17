@@ -23,27 +23,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Taille
 { 
 
-     #[Groups(["menus"])]
+     #[Groups(["details"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
     
-    #[Groups(['write',"menus"])]
+    #[Groups(["details"])]
     #[ORM\Column(type: 'integer',nullable: true)]
     private $prix;
 
-    #[Groups(['write',"menus"])]
+    #[Groups(['write',"details"])]
     #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
 
+    
     
 
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: MenuTaille::class)]
     private $menuTailles;
 
   
-
+    #[Groups(["details"])]
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: TailleBoisson::class)]
     private $tailleBoissons;
 

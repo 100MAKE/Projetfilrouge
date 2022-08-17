@@ -31,15 +31,15 @@ class Menu extends Produit
 {
     
     
-    #[Groups("menus")]
+    #[Groups("details")]
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuBurger::class,cascade:["persist"])]
     private $menuBurgers;
     
-    #[Groups("menus")]
+    #[Groups("details")]
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuTaille::class,cascade:["persist"])]
     private $menuTailles;
     
-    #[Groups("menus")]
+    #[Groups("details")]
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuPortionFrite::class,cascade:["persist"])]
     private $menuPortionFrites;
 

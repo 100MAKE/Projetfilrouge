@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
  use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -15,65 +16,87 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[ApiResource(
     // attributes: ["security" => "is_granted('ROLE_USER')"],
     collectionOperations: [
+        "get" => [
+            // "security" => "is_granted('ROLE_GESTIONNAIRE')",
+            // "security_message" => "uniquement pour gestionnaire",
+            "normalization_context" => ["groups" => ["comr"]]
+
+    ],
         "post" => [
             // "security" => "is_granted('ROLE_CLIENT')",
-            "security_message" => "uniquement pour client",
-            'denormalization_context' => ["groups" => ["com:details"]],
-            "normalization_context" => ["groups" => ["com:details:all"]]
+            // "security_message" => "uniquement pour client",
+            // 'denormalization_context' => ["groups" => ["com:details"]],
+            "denormalization_context" => ["groups" => ["com"]]
         ],
     ],
     itemOperations: [
         "get" => [
-            "security" => "is_granted('ROLE_GESTIONNAIRE')",
-            "security_message" => "uniquement pour gestionnaire",
+            // "security" => "is_granted('ROLE_GESTIONNAIRE')",
+            // "security_message" => "uniquement pour gestionnaire",
+            "normalization_context" => ["groups" => ["comr"]]
+
     ],
         "put" => [
-            "security_post_denormalize" => "is_granted('ROLE_GESTIONNAIRE')",
-            "security_post_denormalize_message" => "Sorry, but you are not the actual book owner.",
+            // "security_post_denormalize" => "is_granted('ROLE_GESTIONNAIRE')",
+            // "security_post_denormalize_message" => "Sorry, but you are not the actual book owner.",
         ],
     ],
     )]
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
-{
+{    
+    // #[Groups(['com'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-     #[ORM\Column(type: 'integer',nullable: true)]
+    #[Groups(['comr'])]
+     #[ORM\Column(type: 'string',nullable: true)]
      private $numCommande;
+     
+  
 
-    #[ORM\Column(type: 'date',nullable: true)]
-    private $date;
-
+    #[Groups(['comr'])]
     #[ORM\Column(type: 'integer',nullable: true)]
     private $montant;
-
+    
+    #[Groups(['comr'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $etat;
-
+ 
+    
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     private $client;
 
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'commandes')]
     private $gestionnaire;
 
-    #[Groups(['com:details:all', 'com:details'])]
+    #[Groups(['com','comr'])]
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandePortionFrite::class,cascade:["persist"])]
     private $commandePortionFrites;
 
-    #[Groups(['com:details:all', 'com:details'])]
+    #[Groups(['com','comr'])]
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeBurger::class,cascade:["persist"])]
     private $commandeBurgers;
 
-    #[Groups(['com:details:all', 'com:details'])]
+    #[Groups(['com','comr'])]
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeMenu::class,cascade:["persist"])]
     private $commandeMenus;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeTailleBoisson::class)]
+    #[Groups(['com','comr'])]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeTailleBoisson::class, cascade:["persist"])]
     private $commandeTailleBoissons;
 
+    #[Groups(['com','comr'])]
+    #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes', cascade: ["persist"])]
+    private $zone;
+
+    #[Groups(['comr'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $date;
+
+   
   
     public function __construct()
     {
@@ -82,6 +105,9 @@ class Commande
         $this->commandeBurgers = new ArrayCollection();
         $this->commandeMenus = new ArrayCollection();
         $this->commandeTailleBoissons = new ArrayCollection();
+        $this->date=new \DateTime();
+        $this->numCommande = 'NUM'. date('ymdhis');
+
     }
 
     public function getId(): ?int
@@ -89,29 +115,19 @@ class Commande
         return $this->id;
     }
 
-    public function getNumCommande(): ?int
+    public function getNumCommande(): ?string
     {
         return $this->numCommande;
     }
 
-    public function setNumCommande(int $numCommande): self
+    public function setNumCommande(string $numCommande): self
     {
         $this->numCommande = $numCommande;
 
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
+    
 
     public function getMontant(): ?int
     {
@@ -311,5 +327,31 @@ class Commande
 
         return $this;
     }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(?Zone $zone): self
+    {
+        $this->zone = $zone;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+ 
 
 }

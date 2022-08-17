@@ -55,7 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read:simple'])]
     protected $id;
 
-    #[Groups(['user:read:simple', 'user:write'])]
+    #[Groups(['user:read:simple','user:write'])]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     protected $email;
 
@@ -77,16 +77,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'datetime')]
     protected $expireAt;
-
+    
     #[ORM\Column(type: 'integer', nullable: true)]
     protected $tel;
-
+    
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $adresse;
+    
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $nom;
-
+    
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $prenom;
 
